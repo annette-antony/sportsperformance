@@ -6,12 +6,13 @@ execute:
   echo: true
 
 book:
-  title: "YOUR PROJECT TITLE"
+  title: "Sports Performance"
   author:
-    - AUTHOR1 (UNI1)
-    - AUTHOR2 (UNI2)
-  repo-url: https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME
-  date: today
+    - Aadarsh Agarwal (aa5521)
+    - Annette Antony (aa5522)
+    - Mehyar Sharma (ms7070)
+  repo-url: https://github.com/annette-antony/sportsperformance
+  date: 11/19/2024
   page-footer:
     right: |
       This book was built with <a href="https://quarto.org/">Quarto</a>.
