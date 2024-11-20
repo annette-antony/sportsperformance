@@ -26,7 +26,7 @@ book:
 
 format:
   html:
-    theme: cosmo
+    theme: flatly
     code-fold: true
 
 
