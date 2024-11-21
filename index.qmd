@@ -6,4 +6,4 @@ We are interested to find player performance over consecutive matches, understan
  
 Analyzing how passing accuracy and assist patterns contribute to a team’s success, studying the home stadium advantage, evaluating effects of starting lineups and in-game substitutions on match outcomes, will all be formalized in numbers and charts. This is your guide to build the dream team!
 
-By leveraging data-driven techniques, this project aims to provide nuanced insights that will help teams manage strategies and fans better understand the factors driving success on the soccer field.
+By leveraging data-driven techniques, this project aims to provide nuanced insights that will help teams manage strategies and fans better understand the factors driving success on the soccer field. 
