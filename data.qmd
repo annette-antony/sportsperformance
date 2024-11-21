@@ -1,5 +1,117 @@
 # Data
 
+---
+title: "Untitled"
+author: Aadarsh Agarwal (aa5521), Annette Antony (aa5522) & Meyhar Sharma (ms7070)
+format:
+  html:
+    embed-resources: true
+execute: 
+  echo: true
+---
+
+Dataset Repo (Source): <https://github.com/JaseZiv/worldfootballR> , <https://jaseziv.github.io/worldfootballR/articles/extract-understat-data.html#player-data>
+
+```{r}
+#install.packages('devtools')
+#devtools::install_github("JaseZiv/worldfootballR")
+```
+
+```{r}
+# devtools::install_github("ewenme/understatr")
+library(understatr)
+```
+
+The data has been collected by comparing multiple datasets across different sources for soccer and assesing usability and relevance. We finalised on World Football data for R. The research and comparison for the datasets was done by all three members of the group collectively while compling it was handled by Meyhar.
+
+The website guiding with installation of the dataset and providing the link to the git repo has been updated recently (11/15/2024) and prior to that it was updated in June 2024. While the latest update/change in the git has been made as of 4 days ago in the readme file. The author seems to update often enough indicated by the varying time on different folders and files.
+
+Under the world football data repo there is a lot of variety of data one can work with for this project we have chosen to work with the player performance in a match. This data was updated 4 months ago. The data from 5 randomly chosen matches has been complied which gives us 133 rows and 27 columns.
+
+One problem we observed is some of the data has not been recently updated, it is as old as 2 years. Hence another reason for us to choose player performance in a specific match, it is more recently updated.
+
+A single match's data can be imported using understat_match_players function of the understatr library. Below is a glimpse of how the data looks for match id 14788.
+
+```{r}
+library(worldfootballR)
+wba_liv_players <- understat_match_players(match_url = "https://understat.com/match/14788")
+
+```
+
+Combining data for matches- 14787, 14788, 14789, 14790, 14791
+
+```{r}
+library(dplyr)
+
+# Define the match IDs
+match_ids <- seq(0, 500)            #Specify the match Ids for which you want to fetch data
+match_list <- list()
+
+# Get column names dynamically
+example_match_url <- "https://understat.com/match/14788"
+example_data <- tryCatch({
+  understat_match_players(match_url = example_match_url)
+}, error = function(e) {
+  data.frame() # Return an empty data frame if the example fails
+})
+default_columns <- names(example_data)
+
+# Iterate over match IDs
+for (id in match_ids) {
+  match_url <- paste0("https://understat.com/match/", id)
+  match_data <- tryCatch({
+    # Attempt to fetch match data
+    understat_match_players(match_url = match_url)
+  }, error = function(e) {
+    # Handle errors by creating an NA data frame dynamically
+    message("Error fetching data for URL: ", match_url, " - Adding NA row")
+    data.frame(matrix(NA, nrow = 1, ncol = length(default_columns)),
+               stringsAsFactors = FALSE) %>% 
+      setNames(default_columns)
+  })
+  
+  # Add match ID to the data
+  match_data$id <- id
+  match_list[[as.character(id)]] <- match_data
+}
+
+# Combine all match data into a single data frame
+all_match_players <- bind_rows(match_list)
+
+```
+
+```{r}
+
+library(worldfootballR)
+
+# Initialize an empty data frame to store the results
+all_match_data <- data.frame()
+
+# Define the match URL
+match_url <- "https://understat.com/match/14788"
+
+# Attempt to fetch data, handling errors
+match_data <- tryCatch({
+  # Attempt to fetch the match data
+  understat_match_players(match_url = match_url)
+}, error = function(e) {
+  # Handle the error by creating a row of NA values
+  message("Error fetching data for URL: ", match_url, " - Adding NA row")
+  # Create a single-row data frame of NA values with consistent column names
+  data.frame(matrix(NA, nrow = 1, ncol = length(names(understat_match_players(match_url)))))
+})
+
+# Append the data to your main data frame
+all_match_data <- rbind(all_match_data, match_data)
+
+```
+
+Creating csv of data
+
+```{r}
+write.csv(all_match_players, "combined_match_players_0-500.csv", row.names = FALSE)
+```
+
 ## Description
 
 ## Missing value analysis
