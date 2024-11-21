@@ -2,9 +2,9 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Sports Performance",
+    "title": "Soccer Stats",
     "section": "",
-    "text": "1 Introduction",
+    "text": "1 Introduction\nThe aim of the project is to perform a comprehensive analysis on soccer performance, delving into key features and questions that would influence outcomes at both the player and team levels. Our primary objective is to discover actionable insights by exploring various dynamics of the data.\nWe are interested to find player performance over consecutive matches, understand how individual players maintain or adapt their performance across successive games and identify patterns of consistency or decline. Broadening this we will also explore overall team performance, including a comparison between actual player performance and expected performance, to identify overachieving or underperforming teams.\nAnalyzing how passing accuracy and assist patterns contribute to a team’s success, studying the home stadium advantage, evaluating effects of starting lineups and in-game substitutions on match outcomes, will all be formalized in numbers and charts. This is your guide to build the dream team!\nBy leveraging data-driven techniques, this project aims to provide nuanced insights that will help teams manage strategies and fans better understand the factors driving success on the soccer field.",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
     ]
