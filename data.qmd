@@ -10,7 +10,7 @@ execute:
 ## Description
 
 
-Our dataset consists of 23 columns, with the number of rows/samples depending on the specific range of match_ids included. For example, in the dataset below, we used match_ids ranging from 1 to 500. It is important to note that match_ids from 1 to 80 are absent. Instead of generating an error when a match_id is missing, we implemented a tryCatch function to handle this scenario gracefully. This function checks if a match_id exists, and if it does not, it inserts a NaN value in the dataset. As a result, any NaN values in our dataset are solely due to missing match_ids; otherwise, the dataset is free of missing values or NaNs. In the case of match_ids 1 to 500, our dataset has a total of 11,654 observations, resulting in a dataset shape of 11,654 rows by 23 columns.
+Our dataset consists of 23 columns, with the number of rows/samples depending on the specific range of match_ids included. For example, in the dataset below, we used match_ids ranging from 1 to 500. It is important to note that match_ids from indexes 1 until 80 are absent. Instead of generating an error when a match_id is missing, we implemented a tryCatch function to handle this scenario gracefully. This function checks if a match_id exists, and if it does not, it inserts a NaN value in the dataset. As a result, any NaN values in our dataset are solely due to missing match_ids; otherwise, the dataset is free of missing values or NaNs. In the case of match_ids 1 to 500, our dataset has a total of 11,654 observations, resulting in a dataset shape of 11,654 rows by 23 columns.
 
 The dataset includes the following features along with their descriptions:
 
@@ -62,15 +62,15 @@ This dataset provides a comprehensive view of player performance and match dynam
 library(understatr)
 ```
 
-The data has been collected by comparing multiple datasets across different sources for soccer and assesing usability and relevance. We finalised on World Football data for R. The research and comparison for the datasets was done by all three members of the group collectively while compling it was handled by Meyhar.
+The data was collected by comparing multiple datasets from different sources related to soccer and assessing their usability and relevance. We finalized on World Football Data for R. The research and comparison of the datasets were done collectively by all three members of the group.
 
-The website guiding with installation of the dataset and providing the link to the git repo has been updated recently (11/15/2024) and prior to that it was updated in June 2024. While the latest update/change in the git has been made as of 4 days ago in the readme file. The author seems to update often enough indicated by the varying time on different folders and files.
+The website guiding the installation of the dataset and providing the link to the GitHub repository was last updated on November 15, 2024, with a prior update in June 2024. The most recent change to the repository, specifically to the README file, was made 4 days ago. The author appears to update the repository frequently, as indicated by the varying timestamps on different folders and files.
 
-Under the world football data repo there is a lot of variety of data one can work with for this project we have chosen to work with the player performance in a match. This data was updated 4 months ago. We can update the match_ids to a sequence of match_id values, and we fetch the data for those match ids. If there is no data for that match_id we add a NaN row, or else we add the data of that match.
+The World Football Data repository offers a wide range of datasets, and for this project, we have chosen to work with the player performance data for individual matches. This dataset was last updated 4 months ago. We plan to update the match_ids to a sequential list of match_id values and fetch data for those match_ids. If no data is available for a particular match_id, we will add a row with NaN values. Otherwise, we will add the corresponding match data.
 
-One problem we observed is some of the data has not been recently updated, it is as old as 2 years. Hence another reason for us to choose player performance in a specific match, it is more recently updated.
+One issue we observed is that some of the data in the repository has not been updated recently, with some datasets being as old as 2 years. This is another reason we chose to work with player performance in specific matches, as this data is more recently updated.
 
-A single match's data can be imported using understat_match_players function of the understatr library. Below is a glimpse of how we can fetch data for match id 14788.
+To fetch data for a single match, we can use the understat_match_players function from the understatr library. Below is a glimpse of how we can fetch data for match ID 14788.
 
 ```{r}
 library(worldfootballR)
@@ -78,7 +78,7 @@ wba_liv_players <- understat_match_players(match_url = "https://understat.com/ma
 
 ```
 
-Combining data for matches with the given match_ids
+Combining data for matches with the given match ID:
 
 ```{r,message=FALSE,warning=FALSE}
 library(dplyr)
@@ -119,7 +119,7 @@ all_match_players <- bind_rows(match_list)
 
 ```
 
-Creating csv of data
+“Creating a CSV file of the data:
 
 ```{r}
 # write.csv(all_match_players, "combined_match_players_0-500.csv", row.names = FALSE)
@@ -161,7 +161,7 @@ ggplot(data = nan_summary, aes(x = "", y = count, fill = status)) +
             position = position_stack(vjust = 0.5))
 
 ```
-
+The pie chart depicts that 99% of pur data is complete with no missing values.
 
 
 ```{r, fig.height=8}
@@ -174,3 +174,5 @@ plot_missing(data_missing, max_cols = 8, num_char = 3, percent = FALSE) +
   labs(title = "Missing Values Pattern Analysis") +
   theme(plot.title = element_text(hjust = 2, vjust = 33.5))
 ```
+The plot of missing also verifies the same information that the quality of data is very good with minimal missing values.
+Match IDs from 1 - 80 do not have any data and this is represented by the first bar chart. But the remaining two graphs supports our missing data analysis claim of having minimal missing values.
