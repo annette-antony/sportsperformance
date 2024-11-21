@@ -1,7 +1,5 @@
-# Data
-
 ---
-title: "Untitled"
+title: "Data"
 author: Aadarsh Agarwal (aa5521), Annette Antony (aa5522) & Meyhar Sharma (ms7070)
 format:
   html:
@@ -26,11 +24,11 @@ The data has been collected by comparing multiple datasets across different sour
 
 The website guiding with installation of the dataset and providing the link to the git repo has been updated recently (11/15/2024) and prior to that it was updated in June 2024. While the latest update/change in the git has been made as of 4 days ago in the readme file. The author seems to update often enough indicated by the varying time on different folders and files.
 
-Under the world football data repo there is a lot of variety of data one can work with for this project we have chosen to work with the player performance in a match. This data was updated 4 months ago. The data from 5 randomly chosen matches has been complied which gives us 133 rows and 27 columns.
+Under the world football data repo there is a lot of variety of data one can work with for this project we have chosen to work with the player performance in a match. This data was updated 4 months ago. We can update the match_ids to a sequence of match_id values, and we fetch the data for those match ids. If there is no data for that match_id we add a NaN row, or else we add the data of that match.
 
 One problem we observed is some of the data has not been recently updated, it is as old as 2 years. Hence another reason for us to choose player performance in a specific match, it is more recently updated.
 
-A single match's data can be imported using understat_match_players function of the understatr library. Below is a glimpse of how the data looks for match id 14788.
+A single match's data can be imported using understat_match_players function of the understatr library. Below is a glimpse of how we can fetch data for match id 14788.
 
 ```{r}
 library(worldfootballR)
@@ -38,16 +36,16 @@ wba_liv_players <- understat_match_players(match_url = "https://understat.com/ma
 
 ```
 
-Combining data for matches- 14787, 14788, 14789, 14790, 14791
+Combining data for matches with the given match_ids
 
 ```{r}
 library(dplyr)
 
 # Define the match IDs
-match_ids <- seq(0, 500)            #Specify the match Ids for which you want to fetch data
+match_ids <- seq(1, 500)            #Specify the match Ids for which you want to fetch data
 match_list <- list()
 
-# Get column names dynamically
+# Get column names
 example_match_url <- "https://understat.com/match/14788"
 example_data <- tryCatch({
   understat_match_players(match_url = example_match_url)
@@ -63,7 +61,7 @@ for (id in match_ids) {
     # Attempt to fetch match data
     understat_match_players(match_url = match_url)
   }, error = function(e) {
-    # Handle errors by creating an NA data frame dynamically
+    # Handle errors by creating an NA data frame
     message("Error fetching data for URL: ", match_url, " - Adding NA row")
     data.frame(matrix(NA, nrow = 1, ncol = length(default_columns)),
                stringsAsFactors = FALSE) %>% 
@@ -80,38 +78,42 @@ all_match_players <- bind_rows(match_list)
 
 ```
 
-```{r}
-
-library(worldfootballR)
-
-# Initialize an empty data frame to store the results
-all_match_data <- data.frame()
-
-# Define the match URL
-match_url <- "https://understat.com/match/14788"
-
-# Attempt to fetch data, handling errors
-match_data <- tryCatch({
-  # Attempt to fetch the match data
-  understat_match_players(match_url = match_url)
-}, error = function(e) {
-  # Handle the error by creating a row of NA values
-  message("Error fetching data for URL: ", match_url, " - Adding NA row")
-  # Create a single-row data frame of NA values with consistent column names
-  data.frame(matrix(NA, nrow = 1, ncol = length(names(understat_match_players(match_url)))))
-})
-
-# Append the data to your main data frame
-all_match_data <- rbind(all_match_data, match_data)
-
-```
-
 Creating csv of data
 
 ```{r}
 write.csv(all_match_players, "combined_match_players_0-500.csv", row.names = FALSE)
 ```
 
-## Description
+DATA DESCRIPTION-
 
-## Missing value analysis
+Our dataset consists of 23 columns, with the number of rows/samples depending on the specific range of match_ids included. For example, in the dataset mentioned, we used match_ids ranging from 1 to 500. It is important to note that match_ids from 1 to 80 are absent. Instead of generating an error when a match_id is missing, we implemented a tryCatch function to handle this scenario gracefully. This function checks if a match_id exists, and if it does not, it inserts a NaN value in the dataset. As a result, any NaN values in our dataset are solely due to missing match_ids; otherwise, the dataset is free of missing values or NaNs. In the case of match_ids 1 to 500, our dataset has a total of 11,654 observations, resulting in a dataset shape of 11,654 rows by 23 columns.
+
+The dataset includes the following features along with their descriptions:
+
+```         
+•   match_id: The unique identifier for each match. If a match is not present in the dataset, this value is NaN.
+•   id: A unique identifier for each row in the dataset.
+•   team_id: The unique identifier for each team. For example, Manchester United has a team_id of 89.
+•   home_away: Indicates whether the player participated in a home or away game. h stands for a home stadium, and a stands for an away stadium.
+•   player_id: A unique identifier for each player. For instance, Sergio Romero has a player_id of 560.
+•   swap_id: An identifier related to player swaps .
+•   player: The name of the player the row data refers to.
+•   position: The position the player played in during the match (e.g., GK for Goalkeeper).
+•   positionOrder: A ranking or order related to player positions (specific details are not provided).
+•   time_played: The total minutes a player participated in the match.
+•   goals: The number of goals scored by the player during the match.
+•   own_goals: The number of own goals scored by the player in the match.
+•   shots: The number of shots taken by the player during the match.
+•   xG: Expected Goals, an estimate of the goals the player was predicted to score based on shot quality and other factors.
+•   yellow_card: The number of yellow cards received by the player during the match.
+•   red_card: Indicates if the player received a red card (a player can only receive a maximum of one red card per match).
+•   roaster_in: Whether the player was substituted into the game .
+•   roaster_out: Whether the player was substituted out of the game .
+•   key_passes: The number of key passes made by the player, which are passes that lead to a scoring opportunity.
+•   assists: The total assists made by the player during the match.
+•   xA: Expected Assists, predicting how many assists the player should have contributed in the match.
+•   xGChain: A metric indicating the cumulative expected goals involvement in possessions the player is part of.
+•   xGBuildup: Expected goals involvement in build-up play, excluding key passes and shots.
+```
+
+This dataset provides a comprehensive view of player performance and match dynamics using both traditional and advanced metrics.
