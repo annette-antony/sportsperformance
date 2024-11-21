@@ -1,6 +1,5 @@
 ---
 title: "Data"
-author: Aadarsh Agarwal (aa5521), Annette Antony (aa5522) & Meyhar Sharma (ms7070)
 format:
   html:
     embed-resources: true
@@ -8,7 +7,50 @@ execute:
   echo: true
 ---
 
-Dataset Repo (Source): <https://github.com/JaseZiv/worldfootballR> , <https://jaseziv.github.io/worldfootballR/articles/extract-understat-data.html#player-data>
+## Description
+
+
+Our dataset consists of 23 columns, with the number of rows/samples depending on the specific range of match_ids included. For example, in the dataset below, we used match_ids ranging from 1 to 500. It is important to note that match_ids from 1 to 80 are absent. Instead of generating an error when a match_id is missing, we implemented a tryCatch function to handle this scenario gracefully. This function checks if a match_id exists, and if it does not, it inserts a NaN value in the dataset. As a result, any NaN values in our dataset are solely due to missing match_ids; otherwise, the dataset is free of missing values or NaNs. In the case of match_ids 1 to 500, our dataset has a total of 11,654 observations, resulting in a dataset shape of 11,654 rows by 23 columns.
+
+The dataset includes the following features along with their descriptions:
+
+```         
+•   match_id: The unique identifier for each match. If a match is not present in the dataset, this value is NaN.
+•   id: A unique identifier for each row in the dataset.
+•   team_id: The unique identifier for each team. For example, Manchester United has a team_id of 89.
+•   home_away: Indicates whether the player participated in a home or away game. h stands for a home stadium, and a stands for an away stadium.
+•   player_id: A unique identifier for each player. For instance, Sergio Romero has a player_id of 560.
+•   swap_id: An identifier related to player swaps .
+•   player: The name of the player the row data refers to.
+•   position: The position the player played in during the match (e.g., GK for Goalkeeper).
+•   positionOrder: A ranking or order related to player positions (specific details are not provided).
+•   time_played: The total minutes a player participated in the match.
+•   goals: The number of goals scored by the player during the match.
+•   own_goals: The number of own goals scored by the player in the match.
+•   shots: The number of shots taken by the player during the match.
+•   xG: Expected Goals, an estimate of the goals the player was predicted to score based on shot quality and other factors.
+•   yellow_card: The number of yellow cards received by the player during the match.
+•   red_card: Indicates if the player received a red card (a player can only receive a maximum of one red card per match).
+•   roaster_in: Whether the player was substituted into the game .
+•   roaster_out: Whether the player was substituted out of the game .
+•   key_passes: The number of key passes made by the player, which are passes that lead to a scoring opportunity.
+•   assists: The total assists made by the player during the match.
+•   xA: Expected Assists, predicting how many assists the player should have contributed in the match.
+•   xGChain: A metric indicating the cumulative expected goals involvement in possessions the player is part of.
+•   xGBuildup: Expected goals involvement in build-up play, excluding key passes and shots.
+
+```
+
+### Dataset Source
+
+[Dataset R Package](https://github.com/JaseZiv/worldfootballR) 
+
+[Dataset Repo (Source)](https://jaseziv.github.io/worldfootballR/articles/extract-understat-data.html#player-data)
+
+
+### Fetching Data (for specific match_ids)
+
+This dataset provides a comprehensive view of player performance and match dynamics using both traditional and advanced metrics.
 
 ```{r}
 #install.packages('devtools')
@@ -38,7 +80,7 @@ wba_liv_players <- understat_match_players(match_url = "https://understat.com/ma
 
 Combining data for matches with the given match_ids
 
-```{r}
+```{r,message=FALSE,warning=FALSE}
 library(dplyr)
 
 # Define the match IDs
@@ -62,18 +104,17 @@ for (id in match_ids) {
     understat_match_players(match_url = match_url)
   }, error = function(e) {
     # Handle errors by creating an NA data frame
-    message("Error fetching data for URL: ", match_url, " - Adding NA row")
     data.frame(matrix(NA, nrow = 1, ncol = length(default_columns)),
-               stringsAsFactors = FALSE) %>% 
+               stringsAsFactors = FALSE) %>%
       setNames(default_columns)
   })
-  
+
   # Add match ID to the data
   match_data$id <- id
   match_list[[as.character(id)]] <- match_data
 }
 
-# Combine all match data into a single data frame
+#Combine all match data into a single data frame
 all_match_players <- bind_rows(match_list)
 
 ```
@@ -81,39 +122,55 @@ all_match_players <- bind_rows(match_list)
 Creating csv of data
 
 ```{r}
-write.csv(all_match_players, "combined_match_players_0-500.csv", row.names = FALSE)
+# write.csv(all_match_players, "combined_match_players_0-500.csv", row.names = FALSE)
 ```
 
-DATA DESCRIPTION-
+## Missing Value Analysis
 
-Our dataset consists of 23 columns, with the number of rows/samples depending on the specific range of match_ids included. For example, in the dataset mentioned, we used match_ids ranging from 1 to 500. It is important to note that match_ids from 1 to 80 are absent. Instead of generating an error when a match_id is missing, we implemented a tryCatch function to handle this scenario gracefully. This function checks if a match_id exists, and if it does not, it inserts a NaN value in the dataset. As a result, any NaN values in our dataset are solely due to missing match_ids; otherwise, the dataset is free of missing values or NaNs. In the case of match_ids 1 to 500, our dataset has a total of 11,654 observations, resulting in a dataset shape of 11,654 rows by 23 columns.
+In our dataset, missing values are introduced only for incorrect match_id values. For the correct match_id values, there are no missing values, ensuring data completeness. However, when an incorrect match_id is encountered, we add a row with NaN values for all columns except for the id column, which serves as an identifier. This approach allows us to clearly identify and track the rows with invalid match_id values. In total, there are 80 incorrect match_id values in the dataset, resulting in 80 rows where all values are NaN, except for the id.
 
-The dataset includes the following features along with their descriptions:
+```{r,message=FALSE,warning=FALSE}
 
-```         
-•   match_id: The unique identifier for each match. If a match is not present in the dataset, this value is NaN.
-•   id: A unique identifier for each row in the dataset.
-•   team_id: The unique identifier for each team. For example, Manchester United has a team_id of 89.
-•   home_away: Indicates whether the player participated in a home or away game. h stands for a home stadium, and a stands for an away stadium.
-•   player_id: A unique identifier for each player. For instance, Sergio Romero has a player_id of 560.
-•   swap_id: An identifier related to player swaps .
-•   player: The name of the player the row data refers to.
-•   position: The position the player played in during the match (e.g., GK for Goalkeeper).
-•   positionOrder: A ranking or order related to player positions (specific details are not provided).
-•   time_played: The total minutes a player participated in the match.
-•   goals: The number of goals scored by the player during the match.
-•   own_goals: The number of own goals scored by the player in the match.
-•   shots: The number of shots taken by the player during the match.
-•   xG: Expected Goals, an estimate of the goals the player was predicted to score based on shot quality and other factors.
-•   yellow_card: The number of yellow cards received by the player during the match.
-•   red_card: Indicates if the player received a red card (a player can only receive a maximum of one red card per match).
-•   roaster_in: Whether the player was substituted into the game .
-•   roaster_out: Whether the player was substituted out of the game .
-•   key_passes: The number of key passes made by the player, which are passes that lead to a scoring opportunity.
-•   assists: The total assists made by the player during the match.
-•   xA: Expected Assists, predicting how many assists the player should have contributed in the match.
-•   xGChain: A metric indicating the cumulative expected goals involvement in possessions the player is part of.
-•   xGBuildup: Expected goals involvement in build-up play, excluding key passes and shots.
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(VIM)
+library(naniar)
+library(scales)
+
+nan_summary <- all_match_players %>%
+  summarise(
+    all_nan_count = sum(apply(all_match_players[, -which(names(all_match_players) == "id")], 1, function(x) all(is.na(x)))),
+    complete_count = n() - all_nan_count
+  ) %>%
+  pivot_longer(cols = c("all_nan_count", "complete_count"), names_to = "status", values_to = "count") %>%
+  mutate(
+    status = ifelse(status == "all_nan_count", "All Columns NaN (except id)", "Complete Rows"),
+    percentage = count / sum(count)  # Calculate percentage
+  )
+
+# Pie chart with labels (2 decimal points)
+ggplot(data = nan_summary, aes(x = "", y = count, fill = status)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar(theta = "y") +
+  labs(title = "Proportion of Rows with All Columns NaN (except id) vs. Complete Rows") +
+  theme_void() +
+  scale_fill_manual(values = c("steelblue", "coral")) +
+  theme(legend.title = element_blank()) +
+  geom_text(aes(label = paste0(count, " (", scales::percent(percentage, accuracy = 0.01), ")")), 
+            position = position_stack(vjust = 0.5))
+
 ```
 
-This dataset provides a comprehensive view of player performance and match dynamics using both traditional and advanced metrics.
+
+
+```{r, fig.height=8}
+# library(ggplot2)
+# library(tidyr)
+# library(dplyr)
+library(redav)
+data_missing <- all_match_players[!complete.cases(all_match_players), ]
+plot_missing(data_missing, max_cols = 8, num_char = 3, percent = FALSE) +
+  labs(title = "Missing Values Pattern Analysis") +
+  theme(plot.title = element_text(hjust = 2, vjust = 33.5))
+```
