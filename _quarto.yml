@@ -6,7 +6,7 @@ execute:
   echo: true
 
 book:
-  title: "Sports Performance"
+  title: "Soccer Stats"
   author:
     - Aadarsh Agarwal (aa5521)
     - Annette Antony (aa5522)
