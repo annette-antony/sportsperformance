@@ -1,1 +1,9 @@
 # Introduction
+
+The aim of the project is to perform a comprehensive analysis on soccer performance, delving into key features and questions that would influence outcomes at both the player and team levels. Our primary objective is to discover actionable insights by exploring various dynamics of the data.
+
+We are interested to find player performance over consecutive matches, understand how individual players maintain or adapt their performance across successive games and identify patterns of consistency or decline. Broadening this we will also explore overall team performance, including a comparison between actual player performance and expected performance, to identify overachieving or underperforming teams.
+ 
+Analyzing how passing accuracy and assist patterns contribute to a team’s success, studying the home stadium advantage, evaluating effects of starting lineups and in-game substitutions on match outcomes, will all be formalized in numbers and charts. This is your guide to build the dream team!
+
+By leveraging data-driven techniques, this project aims to provide nuanced insights that will help teams manage strategies and fans better understand the factors driving success on the soccer field.
