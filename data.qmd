@@ -83,43 +83,41 @@ Combining data for matches with the given match ID:
 ```{r,message=FALSE,warning=FALSE}
 library(dplyr)
 
-# Define the match IDs
-match_ids <- seq(1, 500)            #Specify the match Ids for which you want to fetch data
+#match IDs
+match_ids <- seq(1, 500)          
 match_list <- list()
 
-# Get column names
+#column names
 example_match_url <- "https://understat.com/match/14788"
 example_data <- tryCatch({
   understat_match_players(match_url = example_match_url)
 }, error = function(e) {
-  data.frame() # Return an empty data frame if the example fails
+  data.frame() 
 })
 default_columns <- names(example_data)
 
-# Iterate over match IDs
+#iterate over match IDs
 for (id in match_ids) {
   match_url <- paste0("https://understat.com/match/", id)
   match_data <- tryCatch({
-    # Attempt to fetch match data
     understat_match_players(match_url = match_url)
   }, error = function(e) {
-    # Handle errors by creating an NA data frame
+    #error handling
     data.frame(matrix(NA, nrow = 1, ncol = length(default_columns)),
                stringsAsFactors = FALSE) %>%
       setNames(default_columns)
   })
 
-  # Add match ID to the data
   match_data$id <- id
   match_list[[as.character(id)]] <- match_data
 }
 
-#Combine all match data into a single data frame
+#Combine all data into a single data frame
 all_match_players <- bind_rows(match_list)
 
 ```
 
-“Creating a CSV file of the data:
+Creating a CSV file of the data:
 
 ```{r}
 # write.csv(all_match_players, "combined_match_players_0-500.csv", row.names = FALSE)
@@ -134,45 +132,41 @@ In our dataset, missing values are introduced only for incorrect match_id values
 library(ggplot2)
 library(dplyr)
 library(tidyr)
-library(VIM)
 library(naniar)
-library(scales)
 
-nan_summary <- all_match_players %>%
-  summarise(
-    all_nan_count = sum(apply(all_match_players[, -which(names(all_match_players) == "id")], 1, function(x) all(is.na(x)))),
-    complete_count = n() - all_nan_count
-  ) %>%
-  pivot_longer(cols = c("all_nan_count", "complete_count"), names_to = "status", values_to = "count") %>%
-  mutate(
-    status = ifelse(status == "all_nan_count", "All Columns NaN (except id)", "Complete Rows"),
-    percentage = count / sum(count)  # Calculate percentage
-  )
+missing_values <- all_match_players %>%
+  summarise_all(~sum(is.na(.))) %>%
+  pivot_longer(
+    everything(), 
+    names_to = "Variable", values_to = "MissingCount"
+    ) %>%
+  filter(MissingCount > 0)
 
-# Pie chart with labels (2 decimal points)
-ggplot(data = nan_summary, aes(x = "", y = count, fill = status)) +
-  geom_bar(stat = "identity", width = 1) +
-  coord_polar(theta = "y") +
-  labs(title = "Proportion of Rows with All Columns NaN (except id) vs. Complete Rows") +
-  theme_void() +
-  scale_fill_manual(values = c("steelblue", "coral")) +
-  theme(legend.title = element_blank()) +
-  geom_text(aes(label = paste0(count, " (", scales::percent(percentage, accuracy = 0.01), ")")), 
-            position = position_stack(vjust = 0.5))
+ggplot(missing_values, aes(x = Variable, y = MissingCount)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Bar Chart of Missing Values by Variable",
+       x = "Variable",
+       y = "Number of Missing Values") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
 
 ```
-The pie chart depicts that 99% of pur data is complete with no missing values.
-
+The bar chart depicts that each column in the data has 80 missing values which corresponds to the NaN rows inserted for invalid match ids indicating that the rest of our data (the rows with valid match ids) have no missing values.
 
 ```{r, fig.height=8}
 # library(ggplot2)
 # library(tidyr)
 # library(dplyr)
+#library(remotes)
+#remotes::install_github("jtr13/redav")
+
 library(redav)
+
 data_missing <- all_match_players[!complete.cases(all_match_players), ]
 plot_missing(data_missing, max_cols = 8, num_char = 3, percent = FALSE) +
   labs(title = "Missing Values Pattern Analysis") +
-  theme(plot.title = element_text(hjust = 2, vjust = 33.5))
+  theme(plot.title = element_text(hjust = 2, vjust = 48))
 ```
-The plot of missing also verifies the same information that the quality of data is very good with minimal missing values.
-Match IDs from 1 - 80 do not have any data and this is represented by the first bar chart. But the remaining two graphs supports our missing data analysis claim of having minimal missing values.
+The plot of missing also verifies the same information that the quality of data is good with minimal missing values. 
+There is only 1 missing value pattern observed which we can safely say comes from match IDs from 1 - 80 since they are the NaN rows corresponding to invalid match ids. 
