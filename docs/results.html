@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -145,7 +179,14 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#total-playing-time-per-player-faceted-by-team" id="toc-total-playing-time-per-player-faceted-by-team" class="nav-link active" data-scroll-target="#total-playing-time-per-player-faceted-by-team"><span class="header-section-number">3.1</span> Total Playing Time per Player, Faceted by Team</a></li>
+  <li><a href="#graph-2-title" id="toc-graph-2-title" class="nav-link" data-scroll-target="#graph-2-title"><span class="header-section-number">3.2</span> GRAPH 2 TITLE</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/annette-antony/sportsperformance/edit/main/results.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/annette-antony/sportsperformance/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -169,8 +210,57 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"combined_match_players_0-500.csv"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">na.omit</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="total-playing-time-per-player-faceted-by-team" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="total-playing-time-per-player-faceted-by-team"><span class="header-section-number">3.1</span> Total Playing Time per Player, Faceted by Team</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>team_names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"71"</span> <span class="ot">=</span> <span class="st">"Aston Villa"</span>, <span class="st">"72"</span> <span class="ot">=</span> <span class="st">"Everton"</span>, <span class="st">"73"</span> <span class="ot">=</span> <span class="st">"Bournemouth"</span>, <span class="st">"74"</span> <span class="ot">=</span> <span class="st">"Southampton"</span>, <span class="st">"75"</span> <span class="ot">=</span> <span class="st">"Leicester City"</span>, <span class="st">"76"</span> <span class="ot">=</span> <span class="st">"West Bromwich Albion"</span>, <span class="st">"77"</span> <span class="ot">=</span> <span class="st">"Sunderland"</span>,<span class="st">"78"</span> <span class="ot">=</span> <span class="st">"Crytsal Palace"</span>, <span class="st">"79"</span> <span class="ot">=</span> <span class="st">"Norwich City"</span>, <span class="st">"80"</span> <span class="ot">=</span> <span class="st">"Chelsea"</span>, <span class="st">"81"</span> <span class="ot">=</span> <span class="st">"West Ham"</span>, <span class="st">"82"</span> <span class="ot">=</span> <span class="st">"Tottenham Hotspur"</span>,<span class="st">"83"</span> <span class="ot">=</span> <span class="st">"Arsenal"</span>, <span class="st">"84"</span> <span class="ot">=</span> <span class="st">"Swansea City"</span>, <span class="st">"85"</span> <span class="ot">=</span> <span class="st">"Stoke City"</span>, <span class="st">"86"</span> <span class="ot">=</span> <span class="st">"Newcastle United"</span>, <span class="st">"87"</span> <span class="ot">=</span> <span class="st">"Liverpool"</span>,<span class="st">"88"</span> <span class="ot">=</span> <span class="st">"Manchester City"</span>, <span class="st">"89"</span> <span class="ot">=</span> <span class="st">"Manchester United"</span>, <span class="st">"90"</span> <span class="ot">=</span> <span class="st">"Watford"</span>, <span class="st">"91"</span> <span class="ot">=</span> <span class="st">"Hull City"</span>, <span class="st">"92"</span> <span class="ot">=</span> <span class="st">"Burnley"</span>, <span class="st">"93"</span><span class="ot">=</span><span class="st">"Middlesbrough"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>team_name <span class="ot">&lt;-</span> team_names[<span class="fu">as.character</span>(df<span class="sc">$</span>team_id)]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>df_time_played_grouped <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(team_name, player) <span class="sc">|&gt;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_time_played =</span> <span class="fu">sum</span>(time_played), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_time_played_grouped, <span class="fu">aes</span>(<span class="at">x =</span> total_time_played, <span class="at">y =</span> <span class="fu">reorder</span>(player,total_time_played))) <span class="sc">+</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>team_name, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span>          </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Total Playing Time per Player, Faceted by Team"</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Total Time Played (in minutes)"</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Players"</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">face =</span> <span class="st">"bold"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="results_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="1920"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The importance of a player to a team can be assessed based on the amount of playing time they accumulate. Generally, more important players tend to play more minutes compared to those with lesser roles (though this can be influenced by factors such as injuries). Therefore, by examining the bar graph, we can identify which players are crucial to each team. Players positioned at the top of the bar chart for each team are likely to be the most important.</p>
+<p>Additionally, the bar graphs allow us to assess which players may be overworked and could potentially benefit from more rest. By analyzing the amount of playing time, we can identify players who are being relied upon heavily, which may indicate a risk of fatigue or injury if not managed properly.</p>
+<p>For example, Hector Bellerin stands out as one of Arsenal’s most crucial players, as he has accumulated the highest amount of playing time. This suggests that he is a key part of the team’s strategy and is likely being relied upon for consistent performance. On the other hand, players like Lucas Perez, who have played comparatively fewer minutes, may be seen as less central to the team’s operations. This could suggest a reduced workload or a secondary role within the team, making them less susceptible to fatigue. Such insights help in understanding player dynamics and can guide decisions related to player rotation and rest to maintain peak performance throughout the season.</p>
+</section>
+<section id="graph-2-title" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="graph-2-title"><span class="header-section-number">3.2</span> GRAPH 2 TITLE</h2>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -602,7 +692,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/annette-antony/sportsperformance/edit/main/results.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/annette-antony/sportsperformance/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/annette-antony/sportsperformance/edit/main/results.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/annette-antony/sportsperformance/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

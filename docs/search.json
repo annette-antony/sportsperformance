@@ -38,5 +38,25 @@
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Data</span>"
     ]
+  },
+  {
+    "objectID": "results.html",
+    "href": "results.html",
+    "title": "3  Results",
+    "section": "",
+    "text": "3.1 Total Playing Time per Player, Faceted by Team\nCode\nteam_names &lt;- c(\"71\" = \"Aston Villa\", \"72\" = \"Everton\", \"73\" = \"Bournemouth\", \"74\" = \"Southampton\", \"75\" = \"Leicester City\", \"76\" = \"West Bromwich Albion\", \"77\" = \"Sunderland\",\"78\" = \"Crytsal Palace\", \"79\" = \"Norwich City\", \"80\" = \"Chelsea\", \"81\" = \"West Ham\", \"82\" = \"Tottenham Hotspur\",\"83\" = \"Arsenal\", \"84\" = \"Swansea City\", \"85\" = \"Stoke City\", \"86\" = \"Newcastle United\", \"87\" = \"Liverpool\",\"88\" = \"Manchester City\", \"89\" = \"Manchester United\", \"90\" = \"Watford\", \"91\" = \"Hull City\", \"92\" = \"Burnley\", \"93\"=\"Middlesbrough\")\n\ndf$team_name &lt;- team_names[as.character(df$team_id)]\n\ndf_time_played_grouped &lt;- df |&gt;\n  group_by(team_name, player) |&gt;\n  summarise(total_time_played = sum(time_played), .groups = \"drop\")\n\nggplot(df_time_played_grouped, aes(x = total_time_played, y = reorder(player,total_time_played))) +\n  geom_bar(stat = \"identity\", fill = \"steelblue\") +\n  facet_wrap(~team_name, scales = \"free_y\") +          \n  labs(\n    title = \"Total Playing Time per Player, Faceted by Team\",\n    x = \"Total Time Played (in minutes)\",\n    y = \"Players\"\n  ) +\n  theme_minimal() +\n  theme(strip.text = element_text(size = 12, face = \"bold\"))\nThe importance of a player to a team can be assessed based on the amount of playing time they accumulate. Generally, more important players tend to play more minutes compared to those with lesser roles (though this can be influenced by factors such as injuries). Therefore, by examining the bar graph, we can identify which players are crucial to each team. Players positioned at the top of the bar chart for each team are likely to be the most important.\nAdditionally, the bar graphs allow us to assess which players may be overworked and could potentially benefit from more rest. By analyzing the amount of playing time, we can identify players who are being relied upon heavily, which may indicate a risk of fatigue or injury if not managed properly.\nFor example, Hector Bellerin stands out as one of Arsenal’s most crucial players, as he has accumulated the highest amount of playing time. This suggests that he is a key part of the team’s strategy and is likely being relied upon for consistent performance. On the other hand, players like Lucas Perez, who have played comparatively fewer minutes, may be seen as less central to the team’s operations. This could suggest a reduced workload or a secondary role within the team, making them less susceptible to fatigue. Such insights help in understanding player dynamics and can guide decisions related to player rotation and rest to maintain peak performance throughout the season.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Results</span>"
+    ]
+  },
+  {
+    "objectID": "results.html#graph-2-title",
+    "href": "results.html#graph-2-title",
+    "title": "3  Results",
+    "section": "3.2 GRAPH 2 TITLE",
+    "text": "3.2 GRAPH 2 TITLE",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Results</span>"
+    ]
   }
 ]
