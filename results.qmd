@@ -254,6 +254,7 @@ From the combined boxplot, it is evident that Manchester City and Tottenham Hots
 ## ??
 
 ```{r,message=FALSE,warning=FALSE, fig.width=20, fig.height=10}
+
 # Bar Chart: YellowCards by Player
 card_summary <- player_df |>
   group_by(player) |>
@@ -273,3 +274,50 @@ card_chart <- ggplot(card_summary, aes(y = reorder(player, (total_yellow)))) +
 print(card_chart)
 ```
 
+
+## ?
+
+```{r,message=FALSE,warning=FALSE, fig.width=20, fig.height=10}
+
+df_with_lag <- df_team_match_grouped |>
+  group_by(match_id) |>
+  mutate(across(total_goals:total_time_played, ~lag(.x), .names = "opposition_{.col}")) |>
+  ungroup()
+
+df_with_lead <- df_team_match_grouped |>
+  group_by(match_id) |>
+  mutate(across(total_goals:total_time_played, ~lead(.x), .names = "opposition_{.col}")) |>
+  ungroup()
+
+df_with_lag = na.omit(df_with_lag)
+df_with_lead = na.omit(df_with_lead)
+
+df_combined =  rbind(df_with_lag, df_with_lead)
+
+df_combined <- df_combined |>
+  mutate(result = case_when(
+    total_goals > opposition_total_goals ~ "win",
+    total_goals == opposition_total_goals ~ "tie",
+    total_goals < opposition_total_goals ~ "loss"
+  ))
+
+ggplot(df_combined, aes(x = opposition_total_xG, y = total_xG, color = factor(result))) +
+  geom_point() +  
+  facet_wrap(~team_name) +  
+  labs(title = "xG vs Opposition xG Faceted by Team", 
+       x = "Opposition xG", 
+       y = "xG",
+       COLOR = "result") +
+  geom_abline(intercept = 0, slope = 1, color = "steelblue", linetype = "dashed", linewidth = 0.5) +
+  theme_minimal() +
+  scale_color_manual(values = c("loss" = "red", "tie" = "yellow", "win" = "green"))
+
+```
+
+The scatter plot should ideally reflect the following: points lying above the line  y = x  (where xG are greater than the opposition’s xG) should be green, indicating a win for the team. Points on the line  y = x  (where the xG scored by both teams are equal) should be yellow, reflecting a draw. Points below the line  y = x  (where the opposition has more xG) should be red, representing a loss.
+
+Any deviation from this expected trend suggests that either the team or the opposition failed to capitalize on scoring opportunities. For example, a red point above the line  y = x  indicates that despite having more scoring chances (more xG), the team lost the match. This might reflect missed opportunities or an inability to convert chances effectively.
+
+On the other hand, a green point above the line  y = x  indicates strong performance, where the team not only had more scoring chances but also capitalized on them effectively, leading to a win. Teams like Arsenal, Leicester City, and Tottenham Hotspur, which have numerous green points above  y = x , demonstrate good performance by converting their opportunities into victories.
+
+Conversely, teams like Aston Villa and Norwich City show a different trend, with more red points below the line  y = x . This suggests that although they might have had opportunities, they either failed to capitalize on them or could not prevent the opposition from scoring, resulting in a poor performance. Such teams may need to focus on improving both their attacking efficiency and defensive resilience.

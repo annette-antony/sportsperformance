@@ -33,12 +33,23 @@
 
 <div id="plot">
 </div>
-
+<p>
+Select the buttons to filter the visualization by Home/Away
+</p>
 <div id="controls">
   <button id="filter-home">Home</button>
   <button id="filter-away">Away</button>
   <button id="filter-all">All</button>
 </div>
+<p></p>
+
+<p id="summary" style="background-color: white; color: black;">
+We aim to analyse and compare the team performance metrics using this bar chart over multiple matches.
+It helps visualize the team-wise totals of Goals and xG (computed expected goals) for matches.
+</p>
+<p>
+We can hover to display exact values for each metric and filter to compare the team's performance on homegorund versus away. The data has been ordered in descending order of the total goals scored by the team.
+</p>
 
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 <script src="scripts/myscript.js"></script>
