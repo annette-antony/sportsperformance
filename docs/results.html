@@ -189,6 +189,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#understanding-home-and-away-form-of-each-team" id="toc-understanding-home-and-away-form-of-each-team" class="nav-link" data-scroll-target="#understanding-home-and-away-form-of-each-team"><span class="header-section-number">3.4</span> Understanding home and away form of each team</a></li>
   <li><a href="#analyzing-metrics-across-positions" id="toc-analyzing-metrics-across-positions" class="nav-link" data-scroll-target="#analyzing-metrics-across-positions"><span class="header-section-number">3.5</span> Analyzing metrics across positions</a></li>
   <li><a href="#analyzing-total_shots-and-total_key_passes-for-each-team" id="toc-analyzing-total_shots-and-total_key_passes-for-each-team" class="nav-link" data-scroll-target="#analyzing-total_shots-and-total_key_passes-for-each-team"><span class="header-section-number">3.6</span> Analyzing total_shots and total_key_passes for each team</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">3.7</span> ??</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/annette-antony/sportsperformance/edit/main/results.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/annette-antony/sportsperformance/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -504,6 +505,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>From the combined boxplot, it is evident that Manchester City and Tottenham Hotspur consistently exhibit the highest medians for both total shots and total key passes, reflecting their strong offensive gameplay. In contrast, Burnley shows the lowest median for total shots, indicating their struggles in creating scoring opportunities. Additionally, the plot highlights the presence of outliers, showcasing matches where teams performed significantly above or below their typical range. The visualization also provides insights into the lower and upper quartiles, offering a clear understanding of the variability and distribution of performance metrics across different teams.</p>
+</section>
+<section id="section" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="section"><span class="header-section-number">3.7</span> ??</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bar Chart: YellowCards by Player</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>card_summary <span class="ot">&lt;-</span> player_df <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(player) <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">total_yellow =</span> <span class="fu">sum</span>(yellow_card, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">total_red =</span> <span class="fu">sum</span>(red_card, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(total_yellow)) <span class="sc">|&gt;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">50</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>mean_yellow <span class="ot">&lt;-</span> <span class="fu">mean</span>(card_summary<span class="sc">$</span>total_yellow)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>mean_red <span class="ot">&lt;-</span> <span class="fu">mean</span>(card_summary<span class="sc">$</span>total_red)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>card_chart <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(card_summary, <span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">reorder</span>(player, (total_yellow)))) <span class="sc">+</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">x =</span> total_yellow), <span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> <span class="st">"lightgoldenrod"</span>) <span class="sc">+</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">x =</span> total_red), <span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="st">'stack'</span>, <span class="at">fill =</span> <span class="st">"indianred"</span>) <span class="sc">+</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Disciplinary Records by top 50 Players"</span>, <span class="at">y =</span> <span class="st">"Player"</span>, <span class="at">x =</span> <span class="st">"Total Cards"</span>) <span class="sc">+</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() </span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(card_chart)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="results_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="1920"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
 </section>

@@ -216,7 +216,6 @@ ggplot(heatmap_matrix, aes(x = variable, y = pos, fill = value)) +
 ```
 From the graph, we can observe that midfielders generally have the highest values for assists_per_match, xA_per_match, shots_per_match, and key_passes_per_match. Forwards tend to have slightly higher goals_per_match and xG_per_match compared to midfielders. Defenders contribute the least across these metrics when compared to midfielders and forwards. An interesting insight is that midfielders have higher shots_per_match than forwards, which is somewhat unexpected.
 
-
 ## Analyzing total_shots and total_key_passes for each team
 
 ```{r,message=FALSE,warning=FALSE, fig.width=20, fig.height=8}
@@ -251,3 +250,26 @@ ggplot(df_long_tm, aes(x = team_name, y = value, fill = metric)) +
 ```
 
 From the combined boxplot, it is evident that Manchester City and Tottenham Hotspur consistently exhibit the highest medians for both total shots and total key passes, reflecting their strong offensive gameplay. In contrast, Burnley shows the lowest median for total shots, indicating their struggles in creating scoring opportunities. Additionally, the plot highlights the presence of outliers, showcasing matches where teams performed significantly above or below their typical range. The visualization also provides insights into the lower and upper quartiles, offering a clear understanding of the variability and distribution of performance metrics across different teams.
+
+## ??
+
+```{r,message=FALSE,warning=FALSE, fig.width=20, fig.height=10}
+# Bar Chart: YellowCards by Player
+card_summary <- player_df |>
+  group_by(player) |>
+  summarize(total_yellow = sum(yellow_card, na.rm = TRUE),
+            total_red = sum(red_card, na.rm = TRUE)) |>
+  arrange(desc(total_yellow)) |>
+  head(50)
+
+mean_yellow <- mean(card_summary$total_yellow)
+mean_red <- mean(card_summary$total_red)
+
+card_chart <- ggplot(card_summary, aes(y = reorder(player, (total_yellow)))) +
+  geom_bar(aes(x = total_yellow), stat = "identity", fill = "lightgoldenrod") +
+  geom_bar(aes(x = total_red), stat = "identity", position = 'stack', fill = "indianred") +
+  labs(title = "Disciplinary Records by top 50 Players", y = "Player", x = "Total Cards") +
+  theme_minimal() 
+print(card_chart)
+```
+
