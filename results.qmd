@@ -8,24 +8,30 @@ library(tidyr)
 library(vcd)
 library(reshape2)
 
-df = read.csv("combined_match_players_0-500.csv")
-df = na.omit(df)
+player_df = read.csv("combined_match_players_0-500.csv")
+player_df = na.omit(player_df)
 
 ```
 
+<<<<<<< HEAD
 ## Total Playing Time per Player, to determine importance and work load of each player
+=======
+## Game Changers: Identifying the Most Influential Players
+
+This chart is used to analyse the total playing time for each player in their respective teams. We do this by plotting a horizontal bar chart for the minutes played by per match for each player faceted by team. 
 
 ```{r,message=FALSE,warning=FALSE, fig.width=20, fig.height=20}
 
 team_names <- c("71" = "Aston Villa", "72" = "Everton", "73" = "Bournemouth", "74" = "Southampton", "75" = "Leicester City", "76" = "West Bromwich Albion", "77" = "Sunderland","78" = "Crytsal Palace", "79" = "Norwich City", "80" = "Chelsea", "81" = "West Ham", "82" = "Tottenham Hotspur","83" = "Arsenal", "84" = "Swansea City", "85" = "Stoke City", "86" = "Newcastle United", "87" = "Liverpool","88" = "Manchester City", "89" = "Manchester United", "90" = "Watford", "91" = "Hull City", "92" = "Burnley", "93"="Middlesbrough")
 
-df$team_name <- team_names[as.character(df$team_id)]
+player_df$team_name <- team_names[as.character(player_df$team_id)]
 
-df_time_played_grouped <- df |>
+df_time_played_grouped <- player_df |>
   group_by(team_name, player) |>
   summarise(total_time_played = sum(time_played), .groups = "drop")
 
-ggplot(df_time_played_grouped, aes(x = total_time_played, y = reorder(player,total_time_played))) +
+ggplot(df_time_played_grouped, 
+       aes(x = total_time_played, y = reorder(player,total_time_played))) +
   geom_bar(stat = "identity", fill = "steelblue") +
   facet_wrap(~team_name, scales = "free_y") +          
   labs(
@@ -40,9 +46,48 @@ ggplot(df_time_played_grouped, aes(x = total_time_played, y = reorder(player,tot
 
 The importance of a player to a team can be assessed based on the amount of playing time they accumulate. Generally, more important players tend to play more minutes compared to those with lesser roles (though this can be influenced by factors such as injuries). Therefore, by examining the bar graph, we can identify which players are crucial to each team. Players positioned at the top of the bar chart for each team are likely to be the most important.
 
-Additionally, the bar graphs allow us to assess which players may be overworked and could potentially benefit from more rest. By analyzing the amount of playing time, we can identify players who are being relied upon heavily, which may indicate a risk of fatigue or injury if not managed properly.
+This also allow us to assess which players may be overworked and could potentially benefit from more rest. By analyzing the amount of playing time, we can identify players who are being relied upon heavily, which may indicate a risk of fatigue or injury if not managed properly.
 
-For example, Hector Bellerin stands out as one of Arsenal’s most crucial players, as he has accumulated the highest amount of playing time. This suggests that he is a key part of the team’s strategy and is likely being relied upon for consistent performance. On the other hand, players like Lucas Perez, who have played comparatively fewer minutes, may be seen as less central to the team’s operations. This could suggest a reduced workload or a secondary role within the team, making them less susceptible to fatigue. Such insights help in understanding player dynamics and can guide decisions related to player rotation and rest to maintain peak performance throughout the season.
+For example, Hector Bellerin stands out as one of Arsenal’s most crucial players, as he has accumulated the highest amount of playing time. This suggests that he is a key part of the team’s strategy and is likely being relied upon for consistent performance. Such insights help in understanding player dynamics and can guide decisions related to player rotation and rest to maintain peak performance throughout the season.
+
+## Team Work Makes The Dream Work: Analysing Player Assists 
+
+Next we use a cleveland dot plot to analyse the expected performance against the actual performance of the top 20 players with the highest total assists. 
+
+```{r}
+average_assists <- player_df %>%
+  group_by(player) %>%
+  summarise(
+    total_xA = sum(xA),
+    total_assists = sum(assists),
+  ) %>%
+  arrange(desc(total_assists))
+
+top_20 <- head(average_assists, 20)
+#print(top_10_assists)
+
+ggplot(top_20, 
+       aes(y = reorder(player, total_assists))) +
+  geom_point(aes(x = total_assists, color = "Actual Assists"), 
+             size = 3) +  
+  geom_point(aes(x = total_xA, color = "Expected Assists"), 
+             size = 3) +  
+  labs(
+    title = "Player Performance: Average Assists vs Expected Assists",
+       x = "Assists",
+       y = "Player"
+    ) +
+  theme_minimal() +
+  scale_color_manual(values = c("Actual Assists" = "steelblue", "Expected Assists" = "coral"), 
+                     name = "Type") +  
+  guides(color = guide_legend(title = "Type"))
+```
+
+Most of the players with the highest assists in all the matches played exceeded their expected assists. Barring Riyah Mahrez and Cesc Fabregas every other player from this top 20 list has made more assists than was expected of them indicating they are reliable teammates. This information can be helpful when planning team strategies or even at the time of analysis of a rival team, you can ascertain which players in the rival team to keep the ball away from or which players to focus the defense on. 
+
+If we consider the previous chart displaying the total minutes played by each player, 11 out of the 20 players with the highest assists (i.e. 11 out of the players on the cleveland chart) have been the top five players for their respective teams in terms of minutes played. Indicating they are indeed extremely important for the team, some of these players include Mesut Ozil, Dimitri Payet, James Milner, Adam Lallana etc. However this is not always the case, nearly 50% of these 20 players did not play many minutes on their teams yet they contributed in the short time they were on the field making them critical for game strategies. 
+
+An interesting observation is that Troy Deeney exactly as many assists as expected. Talk about a good prediction!
 
 ## Goals vs xG 
 
@@ -70,7 +115,7 @@ print(scatter_plot)
 
 ```
 
- xG, or expected goals, is a crucial metric in football that quantifies the quality of scoring chances a team creates during a match. A high xG indicates that a team has generated several good opportunities to score. Since goals are the ultimate objective in football, every team aims to maximize both their xG and their actual goals. If a team has a high xG but a lower number of goals, it suggests they are not capitalizing on their chances effectively. Conversely, a low xG paired with a high number of goals may indicate efficient finishing.
+xG, or expected goals, is a crucial metric in football that quantifies the quality of scoring chances a team creates during a match. A high xG indicates that a team has generated several good opportunities to score. Since goals are the ultimate objective in football, every team aims to maximize both their xG and their actual goals. If a team has a high xG but a lower number of goals, it suggests they are not capitalizing on their chances effectively. Conversely, a low xG paired with a high number of goals may indicate efficient finishing.
 
 From the graph, we observe that teams like Arsenal and Stoke City often have points below the y=x line, reflecting fewer goals than their xG—a sign they need to improve their conversion rate. On the other hand, teams like Liverpool frequently exceed the y=x line, demonstrating better utilization of their scoring opportunities. 
 
@@ -121,7 +166,6 @@ ggplot(df_long, aes(x = metric, y = value, fill = home_away)) +
   scale_fill_manual(values = c("a" = "lightblue", "h" = "indianred")) +  # Adjust colors for home/away
   theme_minimal()
 ```
-
 The above graph reveals a clear trend where most teams perform better at home than away, particularly in terms of xG (expected goals) per match. All teams, except Bournemouth, Hull City, Leicester City, Sunderland, and Swansea City, show higher xG per match when playing at home compared to away. A similar pattern is observed for xA (expected assists), further emphasizing the advantage of playing in a familiar home stadium. This trend suggests that the home atmosphere plays a significant role in a team’s performance. Teams with a higher xG and xA at home might benefit from the psychological and tactical advantages of playing in their own stadium. These statistics can be valuable for assessing a team’s overall strength, as well as identifying potential weaknesses or inconsistencies in their away form. By analyzing this data, coaches, analysts, and fans can better understand how home and away factors influence team performance throughout the season.
 
 ## Analyzing metrics across positions
