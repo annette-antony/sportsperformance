@@ -90,6 +90,16 @@
     ]
   },
   {
+    "objectID": "results.html#section",
+    "href": "results.html#section",
+    "title": "3  Results",
+    "section": "3.6 ??",
+    "text": "3.6 ??\n\n\nCode\n# Bar Chart: YellowCards by Player\ncard_summary &lt;- player_df |&gt;\n  group_by(player) |&gt;\n  summarize(total_yellow = sum(yellow_card, na.rm = TRUE),\n            total_red = sum(red_card, na.rm = TRUE)) |&gt;\n  arrange(desc(total_yellow)) |&gt;\n  head(50)\n\nmean_yellow &lt;- mean(card_summary$total_yellow)\nmean_red &lt;- mean(card_summary$total_red)\n\ncard_chart &lt;- ggplot(card_summary, aes(y = reorder(player, (total_yellow)))) +\n  geom_bar(aes(x = total_yellow), stat = \"identity\", fill = \"lightgoldenrod\") +\n  geom_bar(aes(x = total_red), stat = \"identity\", position = 'stack', fill = \"indianred\") +\n  labs(title = \"Disciplinary Records by top 50 Players\", y = \"Player\", x = \"Total Cards\") +\n  theme_minimal() \nprint(card_chart)",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Results</span>"
+    ]
+  },
+  {
     "objectID": "d3graph.html",
     "href": "d3graph.html",
     "title": "4  Interactive graph",
