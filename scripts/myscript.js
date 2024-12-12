@@ -2,7 +2,7 @@ const margin = {top: 50, right: 50, bottom: 100, left: 50};
 const width = 800 - margin.left - margin.right;
 const height = 500 - margin.top - margin.bottom;
 
-const svg = d3.select("#chart-container")
+const svg = d3.select("#plot")
   .append("svg")
   .attr("width", width + margin.left + margin.right)
   .attr("height", height + margin.top + margin.bottom);
@@ -10,7 +10,7 @@ const svg = d3.select("#chart-container")
 const chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left},${margin.top})`);
 
-const tooltip = d3.select("#chart-container")
+const tooltip = d3.select("#plot")
   .append("div")
   .attr("class", "tooltip");
 
