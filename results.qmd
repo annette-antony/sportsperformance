@@ -216,6 +216,41 @@ ggplot(heatmap_matrix, aes(x = variable, y = pos, fill = value)) +
 ```
 From the graph, we can observe that midfielders generally have the highest values for assists_per_match, xA_per_match, shots_per_match, and key_passes_per_match. Forwards tend to have slightly higher goals_per_match and xG_per_match compared to midfielders. Defenders contribute the least across these metrics when compared to midfielders and forwards. An interesting insight is that midfielders have higher shots_per_match than forwards, which is somewhat unexpected.
 
+## Analyzing total_shots and total_key_passes for each team
+
+```{r,message=FALSE,warning=FALSE, fig.width=20, fig.height=8}
+
+df_team_match_grouped <- player_df |>
+  group_by(match_id,team_name) |>
+  summarise(
+    total_goals = sum(goals, na.rm = TRUE),
+    total_xG = sum(xG, na.rm = TRUE),
+    total_xA = sum(xA, na.rm = TRUE),
+    total_shots = sum(shots, na.rm = TRUE),
+    total_assists = sum(assists, na.rm = TRUE),
+    total_key_passes = sum(key_passes, na.rm = TRUE),
+    total_time_played = sum(time_played, na.rm=TRUE)
+  )
+
+df_long_tm <- df_team_match_grouped %>%
+  pivot_longer(cols = c(total_shots, total_key_passes),
+               names_to = "metric",
+               values_to = "value")
+
+ggplot(df_long_tm, aes(x = team_name, y = value, fill = metric)) +
+  geom_boxplot(position = position_dodge(0.8), color = "black") +
+  labs(title = "Boxplot of Total Shots and Key Passes by Team", 
+       x = "Team Names", 
+       y = "Value") +
+  scale_fill_manual(values = c("lightblue", "orange"),
+                    labels = c("Total Shots", "Total Key Passes")) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.title = element_blank())
+
+```
+
+From the combined boxplot, it is evident that Manchester City and Tottenham Hotspur consistently exhibit the highest medians for both total shots and total key passes, reflecting their strong offensive gameplay. In contrast, Burnley shows the lowest median for total shots, indicating their struggles in creating scoring opportunities. Additionally, the plot highlights the presence of outliers, showcasing matches where teams performed significantly above or below their typical range. The visualization also provides insights into the lower and upper quartiles, offering a clear understanding of the variability and distribution of performance metrics across different teams.
+
 ## ??
 
 ```{r,message=FALSE,warning=FALSE, fig.width=20, fig.height=10}

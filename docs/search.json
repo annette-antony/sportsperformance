@@ -90,11 +90,21 @@
     ]
   },
   {
+    "objectID": "results.html#analyzing-total_shots-and-total_key_passes-for-each-team",
+    "href": "results.html#analyzing-total_shots-and-total_key_passes-for-each-team",
+    "title": "3  Results",
+    "section": "3.6 Analyzing total_shots and total_key_passes for each team",
+    "text": "3.6 Analyzing total_shots and total_key_passes for each team\n\n\nCode\ndf_team_match_grouped &lt;- player_df |&gt;\n  group_by(match_id,team_name) |&gt;\n  summarise(\n    total_goals = sum(goals, na.rm = TRUE),\n    total_xG = sum(xG, na.rm = TRUE),\n    total_xA = sum(xA, na.rm = TRUE),\n    total_shots = sum(shots, na.rm = TRUE),\n    total_assists = sum(assists, na.rm = TRUE),\n    total_key_passes = sum(key_passes, na.rm = TRUE),\n    total_time_played = sum(time_played, na.rm=TRUE)\n  )\n\ndf_long_tm &lt;- df_team_match_grouped %&gt;%\n  pivot_longer(cols = c(total_shots, total_key_passes),\n               names_to = \"metric\",\n               values_to = \"value\")\n\nggplot(df_long_tm, aes(x = team_name, y = value, fill = metric)) +\n  geom_boxplot(position = position_dodge(0.8), color = \"black\") +\n  labs(title = \"Boxplot of Total Shots and Key Passes by Team\", \n       x = \"Team Names\", \n       y = \"Value\") +\n  scale_fill_manual(values = c(\"lightblue\", \"orange\"),\n                    labels = c(\"Total Shots\", \"Total Key Passes\")) +\n  theme(axis.text.x = element_text(angle = 45, hjust = 1),\n        legend.title = element_blank())\n\n\n\n\n\n\n\n\n\nFrom the combined boxplot, it is evident that Manchester City and Tottenham Hotspur consistently exhibit the highest medians for both total shots and total key passes, reflecting their strong offensive gameplay. In contrast, Burnley shows the lowest median for total shots, indicating their struggles in creating scoring opportunities. Additionally, the plot highlights the presence of outliers, showcasing matches where teams performed significantly above or below their typical range. The visualization also provides insights into the lower and upper quartiles, offering a clear understanding of the variability and distribution of performance metrics across different teams.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Results</span>"
+    ]
+  },
+  {
     "objectID": "results.html#section",
     "href": "results.html#section",
     "title": "3  Results",
-    "section": "3.6 ??",
-    "text": "3.6 ??\n\n\nCode\n# Bar Chart: YellowCards by Player\ncard_summary &lt;- player_df |&gt;\n  group_by(player) |&gt;\n  summarize(total_yellow = sum(yellow_card, na.rm = TRUE),\n            total_red = sum(red_card, na.rm = TRUE)) |&gt;\n  arrange(desc(total_yellow)) |&gt;\n  head(50)\n\nmean_yellow &lt;- mean(card_summary$total_yellow)\nmean_red &lt;- mean(card_summary$total_red)\n\ncard_chart &lt;- ggplot(card_summary, aes(y = reorder(player, (total_yellow)))) +\n  geom_bar(aes(x = total_yellow), stat = \"identity\", fill = \"lightgoldenrod\") +\n  geom_bar(aes(x = total_red), stat = \"identity\", position = 'stack', fill = \"indianred\") +\n  labs(title = \"Disciplinary Records by top 50 Players\", y = \"Player\", x = \"Total Cards\") +\n  theme_minimal() \nprint(card_chart)",
+    "section": "3.7 ??",
+    "text": "3.7 ??\n\n\nCode\n# Bar Chart: YellowCards by Player\ncard_summary &lt;- player_df |&gt;\n  group_by(player) |&gt;\n  summarize(total_yellow = sum(yellow_card, na.rm = TRUE),\n            total_red = sum(red_card, na.rm = TRUE)) |&gt;\n  arrange(desc(total_yellow)) |&gt;\n  head(50)\n\nmean_yellow &lt;- mean(card_summary$total_yellow)\nmean_red &lt;- mean(card_summary$total_red)\n\ncard_chart &lt;- ggplot(card_summary, aes(y = reorder(player, (total_yellow)))) +\n  geom_bar(aes(x = total_yellow), stat = \"identity\", fill = \"lightgoldenrod\") +\n  geom_bar(aes(x = total_red), stat = \"identity\", position = 'stack', fill = \"indianred\") +\n  labs(title = \"Disciplinary Records by top 50 Players\", y = \"Player\", x = \"Total Cards\") +\n  theme_minimal() \nprint(card_chart)",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Results</span>"
     ]
