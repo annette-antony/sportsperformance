@@ -17,7 +17,7 @@ const tooltip = d3.select("#plot")
 let originalData; // Will hold the original CSV data to filter later
 
 // Load CSV data
-d3.csv("data.csv").then(data => {
+d3.csv("https://raw.githubusercontent.com/annette-antony/sportsperformance/refs/heads/main/scripts/data.csv").then(data => {
 
   // Convert numeric fields to numbers and round xG to two decimals
   data.forEach(d => {

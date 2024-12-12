@@ -59,7 +59,7 @@ This dataset provides a comprehensive view of player performance and match dynam
 
 ```{r}
 # devtools::install_github("ewenme/understatr")
-library(understatr)
+# library(understatr)
 ```
 
 The data was collected by comparing multiple datasets from different sources related to soccer and assessing their usability and relevance. We finalized on World Football Data for R. The research and comparison of the datasets were done collectively by all three members of the group.
@@ -73,47 +73,47 @@ One issue we observed is that some of the data in the repository has not been up
 To fetch data for a single match, we can use the understat_match_players function from the understatr library. Below is a glimpse of how we can fetch data for match ID 14788.
 
 ```{r}
-library(worldfootballR)
-wba_liv_players <- understat_match_players(match_url = "https://understat.com/match/14788")
-
-```
-
-Combining data for matches with the given match ID:
-
-```{r,message=FALSE,warning=FALSE}
-library(dplyr)
-
-#match IDs
-match_ids <- seq(1, 500)          
-match_list <- list()
-
-#column names
-example_match_url <- "https://understat.com/match/14788"
-example_data <- tryCatch({
-  understat_match_players(match_url = example_match_url)
-}, error = function(e) {
-  data.frame() 
-})
-default_columns <- names(example_data)
-
-#iterate over match IDs
-for (id in match_ids) {
-  match_url <- paste0("https://understat.com/match/", id)
-  match_data <- tryCatch({
-    understat_match_players(match_url = match_url)
-  }, error = function(e) {
-    #error handling
-    data.frame(matrix(NA, nrow = 1, ncol = length(default_columns)),
-               stringsAsFactors = FALSE) %>%
-      setNames(default_columns)
-  })
-
-  match_data$id <- id
-  match_list[[as.character(id)]] <- match_data
-}
-
-#Combine all data into a single data frame
-all_match_players <- bind_rows(match_list)
+# library(worldfootballR)
+# wba_liv_players <- understat_match_players(match_url = "https://understat.com/match/14788")
+# 
+# ```
+# 
+# Combining data for matches with the given match ID:
+# 
+# ```{r,message=FALSE,warning=FALSE}
+# library(dplyr)
+# 
+# #match IDs
+# match_ids <- seq(1, 500)          
+# match_list <- list()
+# 
+# #column names
+# example_match_url <- "https://understat.com/match/14788"
+# example_data <- tryCatch({
+#   understat_match_players(match_url = example_match_url)
+# }, error = function(e) {
+#   data.frame() 
+# })
+# default_columns <- names(example_data)
+# 
+# #iterate over match IDs
+# for (id in match_ids) {
+#   match_url <- paste0("https://understat.com/match/", id)
+#   match_data <- tryCatch({
+#     understat_match_players(match_url = match_url)
+#   }, error = function(e) {
+#     #error handling
+#     data.frame(matrix(NA, nrow = 1, ncol = length(default_columns)),
+#                stringsAsFactors = FALSE) %>%
+#       setNames(default_columns)
+#   })
+# 
+#   match_data$id <- id
+#   match_list[[as.character(id)]] <- match_data
+# }
+# 
+# #Combine all data into a single data frame
+# all_match_players <- bind_rows(match_list)
 
 ```
 
@@ -133,6 +133,8 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(naniar)
+
+all_match_players <- read.csv("combined_match_players_0-500.csv")
 
 missing_values <- all_match_players %>%
   summarise_all(~sum(is.na(.))) %>%
