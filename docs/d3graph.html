@@ -173,9 +173,38 @@ ul.task-list li input[type="checkbox"] {
   * {
     font-family: sans-serif;
   }
+  #plot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .bar:hover {
+    fill: orange;
+  }
+
+  .tooltip {
+    position: absolute;
+    text-align: center;
+    background: #eee;
+    padding: 5px;
+    border: 1px solid #aaa;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  #controls {
+    margin-bottom: 20px;
+  }
 </style>
+<title>
+Team Performance Dashboard
+</title>
 <div id="plot">
 
+</div>
+<div id="controls">
+<p><button id="filter-home">Home</button> <button id="filter-away">Away</button> <button id="filter-all">All</button></p>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 <script src="scripts/myscript.js"></script>
