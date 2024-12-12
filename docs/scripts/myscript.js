@@ -14,28 +14,24 @@ const tooltip = d3.select("#plot")
   .append("div")
   .attr("class", "tooltip");
 
-let originalData; // Will hold the original CSV data to filter later
+let originalData; 
 
-// Load CSV data
 d3.csv("https://raw.githubusercontent.com/annette-antony/sportsperformance/refs/heads/main/scripts/data.csv").then(data => {
 
-  // Convert numeric fields to numbers and round xG to two decimals
   data.forEach(d => {
     d.goals = +d.goals;
     d.xG = +d.xG;
-    // Round xG to 2 decimals
     d.xG = Math.round(d.xG * 100) / 100;
   });
-
-  // Remove rows with NaN values in goals or xG
-  data = data.filter(d => !isNaN(d.goals) && !isNaN(d.xG));
+  
+  data = data.filter(d => !isNaN(d.goals) && !isNaN(d.xG) && !isNaN(d.team_id));
 
   originalData = data;
 
   // Initial aggregation with all data
   const aggregated = reAggregate(data);
 
-  // Set up scales (will be updated in updateChart)
+  // Set up scales (domains will be updated in updateChart)
   const x = d3.scaleBand().range([0, width]).padding(0.2);
   const y = d3.scaleLinear().range([height, 0]);
 
@@ -58,18 +54,17 @@ d3.csv("https://raw.githubusercontent.com/annette-antony/sportsperformance/refs/
 
   function reAggregate(rawData) {
     // Aggregate data by team_id
-    // Summing goals and xG across all matches in rawData
     const rolled = d3.rollups(rawData, v => {
       return {
         goals: d3.sum(v, d => d.goals),
         xG: d3.sum(v, d => d.xG),
-        matches: v.map(d => d.match_id) // store matches if needed
+        matches: v.map(d => d.match_id)
       };
     }, d => d.team_id).map(([team_id, values]) => {
       return {
         team_id: team_id,
         goals: values.goals,
-        xG: Math.round(values.xG * 100) / 100, // ensure rounding even after aggregation
+        xG: Math.round(values.xG * 100) / 100,
         matches: values.matches
       };
     });
@@ -78,9 +73,13 @@ d3.csv("https://raw.githubusercontent.com/annette-antony/sportsperformance/refs/
   }
 
   function updateChart(data) {
-    // Update domains
+    // Sort data by decreasing total goals
+    data = data.slice().sort((a, b) => b.goals - a.goals);
+
+    // Update domains after sorting
     const x = d3.scaleBand().range([0, width]).padding(0.2)
       .domain(data.map(d => d.team_id));
+
     const maxVal = d3.max(data, d => Math.max(d.goals, d.xG)) || 1;
     const y = d3.scaleLinear().range([height, 0]).domain([0, maxVal]);
 
@@ -155,7 +154,6 @@ d3.csv("https://raw.githubusercontent.com/annette-antony/sportsperformance/refs/
       .attr("y", d => y(d.xG))
       .attr("height", d => height - y(d.xG))
       .attr("fill", "orange");
-
   }
 
   function showTooltip(event, htmlContent) {
