@@ -11,7 +11,7 @@
   }
 
   .bar:hover {
-    fill: orange;
+    fill: black;
   }
 
   .tooltip {
