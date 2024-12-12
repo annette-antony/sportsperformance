@@ -13,9 +13,6 @@ player_df = na.omit(player_df)
 
 ```
 
-<<<<<<< HEAD
-## Total Playing Time per Player, to determine importance and work load of each player
-=======
 ## Game Changers: Identifying the Most Influential Players
 
 This chart is used to analyse the total playing time for each player in their respective teams. We do this by plotting a horizontal bar chart for the minutes played by per match for each player faceted by team. 
@@ -93,7 +90,7 @@ An interesting observation is that Troy Deeney exactly as many assists as expect
 
 ```{r,message=FALSE,warning=FALSE, fig.width=20, fig.height=8}
 
-df_match_team_grouped <- df %>%
+df_match_team_grouped <- player_df %>%
   group_by(match_id, team_name, home_away) %>%
   summarise(
     total_goals = sum(goals, na.rm = TRUE),
@@ -174,9 +171,9 @@ The above graph reveals a clear trend where most teams perform better at home th
 
 pos_match <- c("AMC" = "MidFielder","AML" = "MidFielder","AMR" = "MidFielder","MC" = "MidFielder","MR" = "MidFielder", "ML" = "MidFielder","DC" = "Defender","DL" = "Defender","DMC" = "Defender","DML" = "Defender","DMR" = "Defender","DR" = "Defender","FW" = "Forward","FWL" = "Forward","FWR" = "Forward","GK" = "Forward")
 
-df$pos <- pos_match[as.character(df$position)]
+player_df$pos <- pos_match[as.character(player_df$position)]
 
-df_position_grouped <- df |>
+df_position_grouped <- player_df |>
   group_by(pos) |>
   summarise(
     total_goals = sum(goals, na.rm = TRUE),
