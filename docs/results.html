@@ -188,6 +188,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#goals-vs-xg" id="toc-goals-vs-xg" class="nav-link" data-scroll-target="#goals-vs-xg"><span class="header-section-number">3.3</span> Goals vs xG</a></li>
   <li><a href="#understanding-home-and-away-form-of-each-team" id="toc-understanding-home-and-away-form-of-each-team" class="nav-link" data-scroll-target="#understanding-home-and-away-form-of-each-team"><span class="header-section-number">3.4</span> Understanding home and away form of each team</a></li>
   <li><a href="#analyzing-metrics-across-positions" id="toc-analyzing-metrics-across-positions" class="nav-link" data-scroll-target="#analyzing-metrics-across-positions"><span class="header-section-number">3.5</span> Analyzing metrics across positions</a></li>
+  <li><a href="#analyzing-total_shots-and-total_key_passes-for-each-team" id="toc-analyzing-total_shots-and-total_key_passes-for-each-team" class="nav-link" data-scroll-target="#analyzing-total_shots-and-total_key_passes-for-each-team"><span class="header-section-number">3.6</span> Analyzing total_shots and total_key_passes for each team</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/annette-antony/sportsperformance/edit/main/results.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/annette-antony/sportsperformance/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -461,6 +462,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>From the graph, we can observe that midfielders generally have the highest values for assists_per_match, xA_per_match, shots_per_match, and key_passes_per_match. Forwards tend to have slightly higher goals_per_match and xG_per_match compared to midfielders. Defenders contribute the least across these metrics when compared to midfielders and forwards. An interesting insight is that midfielders have higher shots_per_match than forwards, which is somewhat unexpected.</p>
+</section>
+<section id="analyzing-total_shots-and-total_key_passes-for-each-team" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="analyzing-total_shots-and-total_key_passes-for-each-team"><span class="header-section-number">3.6</span> Analyzing total_shots and total_key_passes for each team</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df_team_match_grouped <span class="ot">&lt;-</span> player_df <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(match_id,team_name) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_goals =</span> <span class="fu">sum</span>(goals, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_xG =</span> <span class="fu">sum</span>(xG, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_xA =</span> <span class="fu">sum</span>(xA, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_shots =</span> <span class="fu">sum</span>(shots, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_assists =</span> <span class="fu">sum</span>(assists, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_key_passes =</span> <span class="fu">sum</span>(key_passes, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_time_played =</span> <span class="fu">sum</span>(time_played, <span class="at">na.rm=</span><span class="cn">TRUE</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>df_long_tm <span class="ot">&lt;-</span> df_team_match_grouped <span class="sc">%&gt;%</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(total_shots, total_key_passes),</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"metric"</span>,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"value"</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_long_tm, <span class="fu">aes</span>(<span class="at">x =</span> team_name, <span class="at">y =</span> value, <span class="at">fill =</span> metric)) <span class="sc">+</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="fl">0.8</span>), <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Boxplot of Total Shots and Key Passes by Team"</span>, </span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Team Names"</span>, </span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Value"</span>) <span class="sc">+</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"lightblue"</span>, <span class="st">"orange"</span>),</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>                    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Total Shots"</span>, <span class="st">"Total Key Passes"</span>)) <span class="sc">+</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="results_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="1920"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>From the combined boxplot, it is evident that Manchester City and Tottenham Hotspur consistently exhibit the highest medians for both total shots and total key passes, reflecting their strong offensive gameplay. In contrast, Burnley shows the lowest median for total shots, indicating their struggles in creating scoring opportunities. Additionally, the plot highlights the presence of outliers, showcasing matches where teams performed significantly above or below their typical range. The visualization also provides insights into the lower and upper quartiles, offering a clear understanding of the variability and distribution of performance metrics across different teams.</p>
 
 
 </section>
