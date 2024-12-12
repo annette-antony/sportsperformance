@@ -110,6 +110,16 @@
     ]
   },
   {
+    "objectID": "results.html#section-1",
+    "href": "results.html#section-1",
+    "title": "3  Results",
+    "section": "3.8 ?",
+    "text": "3.8 ?\n\n\nCode\ndf_with_lag &lt;- df_team_match_grouped |&gt;\n  group_by(match_id) |&gt;\n  mutate(across(total_goals:total_time_played, ~lag(.x), .names = \"opposition_{.col}\")) |&gt;\n  ungroup()\n\ndf_with_lead &lt;- df_team_match_grouped |&gt;\n  group_by(match_id) |&gt;\n  mutate(across(total_goals:total_time_played, ~lead(.x), .names = \"opposition_{.col}\")) |&gt;\n  ungroup()\n\ndf_with_lag = na.omit(df_with_lag)\ndf_with_lead = na.omit(df_with_lead)\n\ndf_combined =  rbind(df_with_lag, df_with_lead)\n\ndf_combined &lt;- df_combined |&gt;\n  mutate(result = case_when(\n    total_goals &gt; opposition_total_goals ~ \"win\",\n    total_goals == opposition_total_goals ~ \"tie\",\n    total_goals &lt; opposition_total_goals ~ \"loss\"\n  ))\n\nggplot(df_combined, aes(x = opposition_total_xG, y = total_xG, color = factor(result))) +\n  geom_point() +  \n  facet_wrap(~team_name) +  \n  labs(title = \"xG vs Opposition xG Faceted by Team\", \n       x = \"Opposition xG\", \n       y = \"xG\",\n       COLOR = \"result\") +\n  geom_abline(intercept = 0, slope = 1, color = \"steelblue\", linetype = \"dashed\", linewidth = 0.5) +\n  theme_minimal() +\n  scale_color_manual(values = c(\"loss\" = \"red\", \"tie\" = \"yellow\", \"win\" = \"green\"))\n\n\n\n\n\n\n\n\n\nThe scatter plot should ideally reflect the following: points lying above the line y = x (where xG are greater than the opposition’s xG) should be green, indicating a win for the team. Points on the line y = x (where the xG scored by both teams are equal) should be yellow, reflecting a draw. Points below the line y = x (where the opposition has more xG) should be red, representing a loss.\nAny deviation from this expected trend suggests that either the team or the opposition failed to capitalize on scoring opportunities. For example, a red point above the line y = x indicates that despite having more scoring chances (more xG), the team lost the match. This might reflect missed opportunities or an inability to convert chances effectively.\nOn the other hand, a green point above the line y = x indicates strong performance, where the team not only had more scoring chances but also capitalized on them effectively, leading to a win. Teams like Arsenal, Leicester City, and Tottenham Hotspur, which have numerous green points above y = x , demonstrate good performance by converting their opportunities into victories.\nConversely, teams like Aston Villa and Norwich City show a different trend, with more red points below the line y = x . This suggests that although they might have had opportunities, they either failed to capitalize on them or could not prevent the opposition from scoring, resulting in a poor performance. Such teams may need to focus on improving both their attacking efficiency and defensive resilience.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Results</span>"
+    ]
+  },
+  {
     "objectID": "d3graph.html",
     "href": "d3graph.html",
     "title": "4  Interactive graph",
