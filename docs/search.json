@@ -114,7 +114,7 @@
     "href": "d3graph.html",
     "title": "4  Interactive graph",
     "section": "",
-    "text": "Team Performance Dashboard\n\n\n\n\n\nHome Away All",
+    "text": "Team Performance Dashboard\n\n\n\n\n\nSelect the buttons to filter the visualization by Home/Away\n\n\nHome Away All\n\n\n\n\nWe aim to analyse and compare the team performance metrics using this bar chart over multiple matches. It helps visualize the team-wise totals of Goals and xG (computed expected goals) for matches.\n\n\nWe can hover to display exact values for each metric and filter to compare the team’s performance on homegorund versus away. The data has been ordered in descending order of the total goals scored by the team.",
     "crumbs": [
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Interactive graph</span>"
     ]
