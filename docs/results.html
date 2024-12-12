@@ -190,6 +190,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#analyzing-metrics-across-positions" id="toc-analyzing-metrics-across-positions" class="nav-link" data-scroll-target="#analyzing-metrics-across-positions"><span class="header-section-number">3.5</span> Analyzing metrics across positions</a></li>
   <li><a href="#analyzing-total_shots-and-total_key_passes-for-each-team" id="toc-analyzing-total_shots-and-total_key_passes-for-each-team" class="nav-link" data-scroll-target="#analyzing-total_shots-and-total_key_passes-for-each-team"><span class="header-section-number">3.6</span> Analyzing total_shots and total_key_passes for each team</a></li>
   <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">3.7</span> ??</a></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1"><span class="header-section-number">3.8</span> ?</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/annette-antony/sportsperformance/edit/main/results.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/annette-antony/sportsperformance/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -537,6 +538,57 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+</section>
+<section id="section-1" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="section-1"><span class="header-section-number">3.8</span> ?</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df_with_lag <span class="ot">&lt;-</span> df_team_match_grouped <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(match_id) <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(total_goals<span class="sc">:</span>total_time_played, <span class="sc">~</span><span class="fu">lag</span>(.x), <span class="at">.names =</span> <span class="st">"opposition_{.col}"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>df_with_lead <span class="ot">&lt;-</span> df_team_match_grouped <span class="sc">|&gt;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(match_id) <span class="sc">|&gt;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(total_goals<span class="sc">:</span>total_time_played, <span class="sc">~</span><span class="fu">lead</span>(.x), <span class="at">.names =</span> <span class="st">"opposition_{.col}"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>df_with_lag <span class="ot">=</span> <span class="fu">na.omit</span>(df_with_lag)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>df_with_lead <span class="ot">=</span> <span class="fu">na.omit</span>(df_with_lead)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>df_combined <span class="ot">=</span>  <span class="fu">rbind</span>(df_with_lag, df_with_lead)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>df_combined <span class="ot">&lt;-</span> df_combined <span class="sc">|&gt;</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">result =</span> <span class="fu">case_when</span>(</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    total_goals <span class="sc">&gt;</span> opposition_total_goals <span class="sc">~</span> <span class="st">"win"</span>,</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    total_goals <span class="sc">==</span> opposition_total_goals <span class="sc">~</span> <span class="st">"tie"</span>,</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    total_goals <span class="sc">&lt;</span> opposition_total_goals <span class="sc">~</span> <span class="st">"loss"</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_combined, <span class="fu">aes</span>(<span class="at">x =</span> opposition_total_xG, <span class="at">y =</span> total_xG, <span class="at">color =</span> <span class="fu">factor</span>(result))) <span class="sc">+</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span>  </span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>team_name) <span class="sc">+</span>  </span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"xG vs Opposition xG Faceted by Team"</span>, </span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Opposition xG"</span>, </span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"xG"</span>,</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>       <span class="at">COLOR =</span> <span class="st">"result"</span>) <span class="sc">+</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">linewidth =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"loss"</span> <span class="ot">=</span> <span class="st">"red"</span>, <span class="st">"tie"</span> <span class="ot">=</span> <span class="st">"yellow"</span>, <span class="st">"win"</span> <span class="ot">=</span> <span class="st">"green"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="results_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="1920"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The scatter plot should ideally reflect the following: points lying above the line y = x (where xG are greater than the opposition’s xG) should be green, indicating a win for the team. Points on the line y = x (where the xG scored by both teams are equal) should be yellow, reflecting a draw. Points below the line y = x (where the opposition has more xG) should be red, representing a loss.</p>
+<p>Any deviation from this expected trend suggests that either the team or the opposition failed to capitalize on scoring opportunities. For example, a red point above the line y = x indicates that despite having more scoring chances (more xG), the team lost the match. This might reflect missed opportunities or an inability to convert chances effectively.</p>
+<p>On the other hand, a green point above the line y = x indicates strong performance, where the team not only had more scoring chances but also capitalized on them effectively, leading to a win. Teams like Arsenal, Leicester City, and Tottenham Hotspur, which have numerous green points above y = x , demonstrate good performance by converting their opportunities into victories.</p>
+<p>Conversely, teams like Aston Villa and Norwich City show a different trend, with more red points below the line y = x . This suggests that although they might have had opportunities, they either failed to capitalize on them or could not prevent the opposition from scoring, resulting in a poor performance. Such teams may need to focus on improving both their attacking efficiency and defensive resilience.</p>
 
 
 </section>
