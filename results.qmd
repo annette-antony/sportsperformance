@@ -3,6 +3,10 @@
 ```{r,message=FALSE,warning=FALSE}
 library(ggplot2)
 library(dplyr)
+library(viridis)
+library(tidyr)
+library(vcd)
+library(reshape2)
 
 player_df = read.csv("combined_match_players_0-500.csv")
 player_df = na.omit(player_df)
@@ -82,3 +86,132 @@ If we consider the previous chart displaying the total minutes played by each pl
 
 An interesting observation is that Troy Deeney exactly as many assists as expected. Talk about a good prediction!
 
+## Goals vs xG 
+
+```{r,message=FALSE,warning=FALSE, fig.width=20, fig.height=8}
+
+df_match_team_grouped <- player_df %>%
+  group_by(match_id, team_name, home_away) %>%
+  summarise(
+    total_goals = sum(goals, na.rm = TRUE),
+    total_assists = sum(assists, na.rm = TRUE),
+    total_xG = sum(xG, na.rm = TRUE),
+    total_xA = sum(xA, na.rm = TRUE),
+    total_key_passes = sum(key_passes, na.rm = TRUE),
+    total_shots = sum(shots, na.rm = TRUE)
+  )
+
+scatter_plot <- ggplot(df_match_team_grouped, aes(x = total_xG, y = total_goals, color = total_shots)) +
+  geom_point(alpha = 0.5) +
+  labs(title = "xG vs Goals", x = "Expected Goals (xG)", y = "Goals", size = "Shots") +
+  scale_color_viridis(option = "C", direction = -1) +
+  facet_wrap(~team_name) +
+  geom_abline(intercept = 0, slope = 1, color = "steelblue", linetype = "dashed", linewidth = 0.5) +
+   theme_minimal()
+print(scatter_plot)
+
+```
+
+xG, or expected goals, is a crucial metric in football that quantifies the quality of scoring chances a team creates during a match. A high xG indicates that a team has generated several good opportunities to score. Since goals are the ultimate objective in football, every team aims to maximize both their xG and their actual goals. If a team has a high xG but a lower number of goals, it suggests they are not capitalizing on their chances effectively. Conversely, a low xG paired with a high number of goals may indicate efficient finishing.
+
+From the graph, we observe that teams like Arsenal and Stoke City often have points below the y=x line, reflecting fewer goals than their xG—a sign they need to improve their conversion rate. On the other hand, teams like Liverpool frequently exceed the y=x line, demonstrating better utilization of their scoring opportunities. 
+
+
+## Understanding home and away form of each team
+
+```{r,message=FALSE,warning=FALSE, fig.width=20, fig.height=10}
+
+df_team_grouped <- df_match_team_grouped %>%
+  group_by(team_name, home_away) %>%
+  summarise(
+    total_goals = sum(total_goals, na.rm = TRUE),
+    total_assists = sum(total_assists, na.rm = TRUE),
+    total_xG = sum(total_xG, na.rm = TRUE),
+    total_xA = sum(total_xA, na.rm = TRUE),
+    total_key_passes = sum(total_key_passes, na.rm = TRUE),
+    total_shots = sum(total_shots, na.rm = TRUE),
+    matches=n()
+  )
+
+df_team_grouped <- df_team_grouped %>%
+  mutate(
+    goals_per_match = total_goals / matches,
+    assists_per_match = total_assists / matches,
+    xG_per_match = total_xG / matches,
+    xA_per_match = total_xA / matches,
+    key_passes_per_match = total_key_passes / matches,
+    shots_per_match = total_shots / matches
+  )
+
+df_long <- df_team_grouped %>%
+  pivot_longer(cols = c(xG_per_match, xA_per_match), names_to = "metric", values_to = "value")
+
+df_long <- df_team_grouped %>%
+  pivot_longer(cols = c("xG_per_match", "xA_per_match"), 
+               names_to = "metric", 
+               values_to = "value")
+
+ggplot(df_long, aes(x = metric, y = value, fill = home_away)) + 
+  geom_bar(stat = "identity", position = "dodge") + 
+  facet_wrap(~ team_name) +
+  labs(
+    title = "Comparison of xG and xA for Teams in Home and Away Matches",
+    x = "Metrics",
+    y = "Values",
+    fill = "Home/Away"
+  ) +
+  scale_fill_manual(values = c("a" = "lightblue", "h" = "indianred")) +  # Adjust colors for home/away
+  theme_minimal()
+```
+The above graph reveals a clear trend where most teams perform better at home than away, particularly in terms of xG (expected goals) per match. All teams, except Bournemouth, Hull City, Leicester City, Sunderland, and Swansea City, show higher xG per match when playing at home compared to away. A similar pattern is observed for xA (expected assists), further emphasizing the advantage of playing in a familiar home stadium. This trend suggests that the home atmosphere plays a significant role in a team’s performance. Teams with a higher xG and xA at home might benefit from the psychological and tactical advantages of playing in their own stadium. These statistics can be valuable for assessing a team’s overall strength, as well as identifying potential weaknesses or inconsistencies in their away form. By analyzing this data, coaches, analysts, and fans can better understand how home and away factors influence team performance throughout the season.
+
+## Analyzing metrics across positions
+
+```{r,message=FALSE,warning=FALSE, fig.width=20, fig.height=10}
+
+pos_match <- c("AMC" = "MidFielder","AML" = "MidFielder","AMR" = "MidFielder","MC" = "MidFielder","MR" = "MidFielder", "ML" = "MidFielder","DC" = "Defender","DL" = "Defender","DMC" = "Defender","DML" = "Defender","DMR" = "Defender","DR" = "Defender","FW" = "Forward","FWL" = "Forward","FWR" = "Forward","GK" = "Forward")
+
+player_df$pos <- pos_match[as.character(player_df$position)]
+
+df_position_grouped <- player_df |>
+  group_by(pos) |>
+  summarise(
+    total_goals = sum(goals, na.rm = TRUE),
+    total_xG = sum(xG, na.rm = TRUE),
+    total_xA = sum(xA, na.rm = TRUE),
+    total_shots = sum(shots, na.rm = TRUE),
+    total_assists = sum(assists, na.rm = TRUE),
+    total_key_passes = sum(key_passes, na.rm = TRUE),
+    total_time_played = sum(time_played, na.rm=TRUE)
+  )
+
+df_position_grouped = na.omit(df_position_grouped)
+
+df_position_grouped <- df_position_grouped |>
+  mutate(
+    goals_per_match = total_goals*90/total_time_played,
+    assists_per_match = total_assists*90/total_time_played,
+    xG_per_match = total_xG*90/total_time_played,
+    xA_per_match = total_xA*90/total_time_played,
+    shots_per_match = total_shots*90/total_time_played,
+    key_passes_per_match = total_key_passes*90/total_time_played
+  )
+
+heatmap_data <- df_position_grouped |>
+  select(pos, goals_per_match, assists_per_match, xG_per_match, xA_per_match, shots_per_match, key_passes_per_match)
+
+heatmap_matrix <- melt(heatmap_data, id.vars = "pos")
+
+ggplot(heatmap_matrix, aes(x = variable, y = pos, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient(low = "lightblue", high = "blue") +
+  labs(
+    title = "Heatmap of Per-Match Metrics by Position",
+    x = "Metric",
+    y = "Position",
+    fill = "Value"
+  ) +
+  theme_minimal()
+
+```
+From the graph, we can observe that midfielders generally have the highest values for assists_per_match, xA_per_match, shots_per_match, and key_passes_per_match. Forwards tend to have slightly higher goals_per_match and xG_per_match compared to midfielders. Defenders contribute the least across these metrics when compared to midfielders and forwards. An interesting insight is that midfielders have higher shots_per_match than forwards, which is somewhat unexpected.
