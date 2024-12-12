@@ -5,7 +5,7 @@ This project is developed by the team members of Group 17 as part of their final
 
 Team Members: Aadarsh Agarwal (aa5521), Annette Antony (aa5522) and Meyhar Sharma (ms7070).
 
-This project aims to conduct an in-depth analysis the performance of soccer players.
+This project aims to conduct an in-depth analysis on the performance of soccer players.
 
 ## Dataset
 [Dataset R Package](https://github.com/JaseZiv/worldfootballR) 
