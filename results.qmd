@@ -95,7 +95,7 @@ Most of the players with the highest assists in all the matches played exceeded 
 
 If we consider the previous chart displaying the total minutes played by each player, 11 out of the 20 players with the highest assists (i.e. 11 out of the players on the cleveland chart) have been the top five players for their respective teams in terms of minutes played. Indicating they are indeed extremely important for the team, some of these players include Mesut Ozil, Dimitri Payet, James Milner, Adam Lallana etc. However this is not always the case, nearly 50% of these 20 players did not play many minutes on their teams yet they contributed in the short time they were on the field making them critical for game strategies. 
 
-An interesting observation is that Troy Deeney exactly as many assists as expected. Talk about a good prediction!
+An interesting observation is that Troy Deeney has exactly as many assists as expected. Talk about a good prediction!
 
 ## Goals vs xG 
 
@@ -225,7 +225,7 @@ ggplot(heatmap_matrix, aes(x = variable, y = pos, fill = value)) +
   theme_minimal()
 
 ```
-From the graph, we can observe that midfielders generally have the highest values for assists_per_match, xA_per_match, shots_per_match, and key_passes_per_match. Forwards tend to have slightly higher goals_per_match and xG_per_match compared to midfielders. Defenders contribute the least across these metrics when compared to midfielders and forwards. An interesting insight is that midfielders have higher shots_per_match than forwards, which is somewhat unexpected.
+This graph reviews the match specific metrics for three positions, namely, midfielder, forward and defender positions. We can observe that midfielders generally have the highest values for assists_per_match, xA_per_match, shots_per_match, and key_passes_per_match. Forwards tend to have slightly higher goals_per_match and xG_per_match compared to midfielders. Defenders contribute the least across these metrics when compared to midfielders and forwards. An interesting insight is that midfielders have higher shots_per_match than forwards, which is somewhat unexpected.
 
 ## Investigating total_shots and total_key_passes for each team
 
@@ -261,7 +261,7 @@ ggplot(df_long_tm, aes(x = team_name, y = value, fill = metric)) +
 
 ```
 
-From the combined boxplot, it is evident that Manchester City and Tottenham Hotspur consistently exhibit the highest medians for both total shots and total key passes, reflecting their strong offensive gameplay. In contrast, Burnley shows the lowest median for total shots, indicating their struggles in creating scoring opportunities. Additionally, the plot highlights the presence of outliers, showcasing matches where teams performed significantly above or below their typical range. The visualization also provides insights into the lower and upper quartiles, offering a clear understanding of the variability and distribution of performance metrics across different teams.
+The above combined boxplot graphs the total shots and total key assists for each team, where, it is evident that Manchester City and Tottenham Hotspur consistently exhibit the highest medians for both total shots and total key passes, reflecting their strong offensive gameplay. In contrast, Burnley shows the lowest median for total shots, indicating their struggles in creating scoring opportunities. Additionally, the plot highlights the presence of outliers, showcasing matches where teams performed significantly above or below their typical range. The visualization also provides insights into the lower and upper quartiles, offering a clear understanding of the variability and distribution of performance metrics across different teams.
 
 ## Deconstructing the most disciplinary records received by players
 
