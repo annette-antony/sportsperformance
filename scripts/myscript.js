@@ -35,6 +35,21 @@ const svg = d3.select("#plot")
 
 const chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left},${margin.top})`);
+  
+chartGroup.append("text")
+  .attr("class", "x-axis-label")
+  .attr("text-anchor", "middle")
+  .attr("x", width / 2)
+  .attr("y", height + margin.bottom - 10)
+  .text("Teams");
+
+chartGroup.append("text")
+  .attr("class", "y-axis-label")
+  .attr("text-anchor", "middle")
+  .attr("transform", `rotate(-90)`)
+  .attr("x", -height / 2)
+  .attr("y", -margin.left + 15)
+  .text("Goals and xG");
 
 const tooltip = d3.select("#plot")
   .append("div")
