@@ -21,6 +21,17 @@ This chart is used to analyse the total playing time for each player in their re
 
 team_names <- c("71" = "Aston Villa", "72" = "Everton", "73" = "Bournemouth", "74" = "Southampton", "75" = "Leicester City", "76" = "West Bromwich Albion", "77" = "Sunderland","78" = "Crytsal Palace", "79" = "Norwich City", "80" = "Chelsea", "81" = "West Ham", "82" = "Tottenham Hotspur","83" = "Arsenal", "84" = "Swansea City", "85" = "Stoke City", "86" = "Newcastle United", "87" = "Liverpool","88" = "Manchester City", "89" = "Manchester United", "90" = "Watford", "91" = "Hull City", "92" = "Burnley", "93"="Middlesbrough")
 
+player_df <- player_df |>
+  mutate(player = case_when(
+    player == "Eunan O&#039;Kane" ~ "Eunan Kane",
+    player == "N&#039;Golo Kanté" ~ "N Golo Kante",
+    player == "Yann M&#039;Vila" ~ "Yann Vila",
+    player == "Gary O&#039;Neil" ~ "Gary Neil",
+    player == "	John O&#039;Shea" ~ "John Shea",
+    player == "Aiden O&#039;Neill" ~ "Aiden Neill",
+    TRUE ~ player  # Keep the original value for all other cases
+  ))
+
 player_df$team_name <- team_names[as.character(player_df$team_id)]
 
 df_time_played_grouped <- player_df |>
@@ -84,7 +95,7 @@ Most of the players with the highest assists in all the matches played exceeded 
 
 If we consider the previous chart displaying the total minutes played by each player, 11 out of the 20 players with the highest assists (i.e. 11 out of the players on the cleveland chart) have been the top five players for their respective teams in terms of minutes played. Indicating they are indeed extremely important for the team, some of these players include Mesut Ozil, Dimitri Payet, James Milner, Adam Lallana etc. However this is not always the case, nearly 50% of these 20 players did not play many minutes on their teams yet they contributed in the short time they were on the field making them critical for game strategies. 
 
-An interesting observation is that Troy Deeney exactly as many assists as expected. Talk about a good prediction!
+An interesting observation is that Troy Deeney has exactly as many assists as expected. Talk about a good prediction!
 
 ## Goals vs xG 
 
@@ -214,7 +225,7 @@ ggplot(heatmap_matrix, aes(x = variable, y = pos, fill = value)) +
   theme_minimal()
 
 ```
-From the graph, we can observe that midfielders generally have the highest values for assists_per_match, xA_per_match, shots_per_match, and key_passes_per_match. Forwards tend to have slightly higher goals_per_match and xG_per_match compared to midfielders. Defenders contribute the least across these metrics when compared to midfielders and forwards. An interesting insight is that midfielders have higher shots_per_match than forwards, which is somewhat unexpected.
+This graph reviews the match specific metrics for three positions, namely, midfielder, forward and defender positions. We can observe that midfielders generally have the highest values for assists_per_match, xA_per_match, shots_per_match, and key_passes_per_match. Forwards tend to have slightly higher goals_per_match and xG_per_match compared to midfielders. Defenders contribute the least across these metrics when compared to midfielders and forwards. An interesting insight is that midfielders have higher shots_per_match than forwards, which is somewhat unexpected.
 
 ## Investigating total_shots and total_key_passes for each team
 
@@ -250,7 +261,7 @@ ggplot(df_long_tm, aes(x = team_name, y = value, fill = metric)) +
 
 ```
 
-From the combined boxplot, it is evident that Manchester City and Tottenham Hotspur consistently exhibit the highest medians for both total shots and total key passes, reflecting their strong offensive gameplay. In contrast, Burnley shows the lowest median for total shots, indicating their struggles in creating scoring opportunities. Additionally, the plot highlights the presence of outliers, showcasing matches where teams performed significantly above or below their typical range. The visualization also provides insights into the lower and upper quartiles, offering a clear understanding of the variability and distribution of performance metrics across different teams.
+The above combined boxplot graphs the total shots and total key assists for each team, where, it is evident that Manchester City and Tottenham Hotspur consistently exhibit the highest medians for both total shots and total key passes, reflecting their strong offensive gameplay. In contrast, Burnley shows the lowest median for total shots, indicating their struggles in creating scoring opportunities. Additionally, the plot highlights the presence of outliers, showcasing matches where teams performed significantly above or below their typical range. The visualization also provides insights into the lower and upper quartiles, offering a clear understanding of the variability and distribution of performance metrics across different teams.
 
 ## Deconstructing the most disciplinary records received by players
 
@@ -336,7 +347,13 @@ Conversely, teams like Aston Villa and Norwich City show a different trend, with
 
 ```{r,message=FALSE,warning=FALSE, fig.width=20, fig.height=10}
 
-# Summarize metrics by team_name
+df_combined <- df_combined |>
+  mutate(points = case_when(
+    total_goals > opposition_total_goals ~ 3,
+    total_goals == opposition_total_goals ~ 1,
+    total_goals < opposition_total_goals ~ 0
+  ))
+
 df_team_grouped <- df_combined |>
   group_by(team_name) |>
   summarise(
@@ -346,7 +363,8 @@ df_team_grouped <- df_combined |>
     avg_shots = mean(total_shots, na.rm = TRUE),
     avg_assists = mean(total_assists, na.rm = TRUE),
     avg_key_passes = mean(total_key_passes, na.rm = TRUE),
-    .groups = "drop"  # Prevent grouping in output
+    avg_points = mean(points,na.rm=TRUE),
+    .groups = "drop"  
   )
 library(parcoords)
 parcoords(df_team_grouped, 
@@ -356,3 +374,34 @@ parcoords(df_team_grouped,
 
 ```
 
+This parallel coordinates plot explores the patterns between teams and their average performance metrics, such as, average goals, assists, expected goals, expected assists, shots and key passes.
+
+We can observe that teams that score more goals (located higher on the avg_goals axis) often appear higher on the avg_xG axis as well, suggesting a strong correlation between a team’s actual scoring output and the quality of their chances. Higher-scoring and higher-xG teams often rank near the top on avg_shots, indicating that goal and xG performance tends to align with shooting frequency. In other words, the more shots the team attempt, the better chances they have to score a goal.
+
+The similar trend can be observed among teams that do well in terms of assists (avg_assists) and key passes (avg_key_passes), as they typically align with higher xG and goals. Some lines show teams whose expected numbers (xG, xA) are decent, but their actual goals or assists are relatively lower. This mismatch may indicate inefficiencies in finishing or an inability to translate creative build-up into final outputs. Conversely, a few teams might outperform their expected numbers, suggesting clinical finishing or overperformance relative to their underlying metrics.
+
+Teams located in the upper region of the parallel coordinates plot are performing better than those in the lower region. For example, Burnley and Aston Villa appear to be struggling, as they are positioned much lower compared to the other teams. On the other hand, teams like Arsenal, Liverpool, and Leicester City are performing well, as they are placed higher on the plot. Overall, the graph hints at strong interdependencies where higher goals/ assists positively correlates with xG, xA and shots, key passes.
+
+## Assessing the average goals scored by each team
+
+```{r}
+
+df_team_grouped$team_name <- factor(df_team_grouped$team_name, 
+                                   levels = df_team_grouped$team_name[order(df_team_grouped$avg_points)])
+
+# Plot the bar chart
+ggplot(df_team_grouped, aes(x = avg_points, y = team_name)) +
+  geom_bar(stat = "identity", fill = "lightblue") +
+  labs(title = "Average Points by Team",
+       x = "Team",
+       y = "Average Points") +
+  theme_minimal() 
+
+```
+
+
+This bar chart visualizes the average points earned by each football team, where points are awarded as follows: 3 points for a win, 1 point for a draw, and 0 points for a loss. The data provides a clear insight into the performance of each team over the course of a season, highlighting the competitiveness across different positions in the league table.
+
+From the chart, we can immediately observe that Leicester City stands out as the most successful team, with an impressive average of 2 points per game. This suggests that Leicester City has consistently performed well, achieving a balanced mix of wins and draws, which is a strong indicator of their competitiveness and ability to maintain good form over time. Achieving 2 points per game is typically a hallmark of top teams in any league, putting Leicester City in an elite position relative to the others.
+
+On the other hand, Aston Villa appears at the bottom of the chart, with an average of less than 0.5 points per game. This places them among the least successful teams, indicating that Aston Villa struggles to accumulate points, likely due to a higher frequency of losses and fewer draws or wins. This could point to areas in need of improvement, such as squad depth, tactics, or overall team performance.
