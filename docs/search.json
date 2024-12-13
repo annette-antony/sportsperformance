@@ -154,7 +154,37 @@
     "href": "conclusion.html",
     "title": "5  Conclusion",
     "section": "",
-    "text": "In conclusion, this project shows just how powerful data analytics can be in the world of soccer. By breaking down match data into clear, measurable parts—like minutes played, assists, shots, and expected goals—we can see patterns that might not be obvious just by watching games. We can pinpoint which players consistently carry their teams, who might be pushed too hard, and which players make the biggest impact even with limited time on the field.\nLooking at teams, comparing their actual results with their expected metrics helps us figure out who’s really making the most of their chances and who needs to step up their finishing. Checking performance at home versus away games reveals how much a familiar stadium and home crowd can matter. On top of that, studying starting lineups, substitutions, passing accuracy, and assist patterns gives coaches and managers real insights into what works and what doesn’t.\nThis kind of analysis isn’t just for the people running the teams—it also helps fans understand the game on a deeper level. By moving beyond guesswork and focusing on the numbers, we can all see the sport in a new light. As better and more detailed data becomes available, soccer will keep evolving, and those who embrace data-driven methods will have a clear edge. It’s a new era where informed decisions and measurable insights can guide teams toward consistent success on the pitch.",
+    "text": "5.1 Main Takeaways:\nWe can spot key players by looking at minutes played, goals, assists, and expected metrics. We can visualise and compare what teams actually do to what’s expected reveals who’s overachieving or underperforming. Home advantage is real! teams usually do better at home than away. Understanding passing, assists, and disciplinary records gives a fuller picture of strengths, weaknesses, and playing styles.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Conclusion</span>"
+    ]
+  },
+  {
+    "objectID": "conclusion.html#limitations",
+    "href": "conclusion.html#limitations",
+    "title": "5  Conclusion",
+    "section": "5.2 Limitations:",
+    "text": "5.2 Limitations:\nMetrics like xG (expected goals) don’t capture everything, like injuries or weather. A single prediction model may not fit all playing styles or unusual match conditions.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Conclusion</span>"
+    ]
+  },
+  {
+    "objectID": "conclusion.html#future-directions",
+    "href": "conclusion.html#future-directions",
+    "title": "5  Conclusion",
+    "section": "5.3 Future Directions:",
+    "text": "5.3 Future Directions:\nWe could define and use many more parameters - player tracking, defensive actions, and more detailed metrics. We could even explore and apply machine learning techniques to predict fatigue, performance patterns, and better player roles.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Conclusion</span>"
+    ]
+  },
+  {
+    "objectID": "conclusion.html#lessons-learned",
+    "href": "conclusion.html#lessons-learned",
+    "title": "5  Conclusion",
+    "section": "5.4 Lessons Learned:",
+    "text": "5.4 Lessons Learned:\nA single metric/parameter is not enough; we require multiple metrics to give a clearer view and this proves to be very challenging in practice. We should strive to refine methods as the game and data evolve to Focus on turning insights into real actions—better lineups, smarter subs, and improved training.",
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Conclusion</span>"
     ]
