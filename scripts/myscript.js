@@ -113,7 +113,7 @@ d3.csv("https://raw.githubusercontent.com/annette-antony/sportsperformance/refs/
   const sortedTeamIds = data
     .map(d => d.team_id)        
     .map(String)               
-    .sort((a, b) => +a - +b);    
+    .sort((a, b) => teamNames[a].localeCompare(teamNames[b]));    
 
   const x = d3.scaleBand().range([0, width]).padding(0.2)
     .domain(sortedTeamIds);
