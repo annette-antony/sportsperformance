@@ -54,16 +54,13 @@ d3.csv("https://raw.githubusercontent.com/annette-antony/sportsperformance/refs/
 
   originalData = data;
 
-  // Initial aggregation with all data
   const aggregated = reAggregate(data);
 
-  // Set up scales (domains will be updated in updateChart)
   const x = d3.scaleBand().range([0, width]).padding(0.2);
   const y = d3.scaleLinear().range([height, 0]);
 
   updateChart(aggregated);
 
-  // Filter buttons
   d3.select("#filter-home").on("click", () => {
     const filtered = data.filter(d => d.home_away === "h");
     updateChart(reAggregate(filtered));
@@ -79,7 +76,6 @@ d3.csv("https://raw.githubusercontent.com/annette-antony/sportsperformance/refs/
   });
 
   function reAggregate(rawData) {
-    // Aggregate data by team_id
     const rolled = d3.rollups(rawData, v => {
       return {
         goals: d3.sum(v, d => d.goals),
@@ -99,13 +95,11 @@ d3.csv("https://raw.githubusercontent.com/annette-antony/sportsperformance/refs/
   }
 
   function updateChart(data) {
-  // Extract team_ids and convert them to strings for matching with teamNames
   const sortedTeamIds = data
-    .map(d => d.team_id)          // team_id as is (likely string from CSV)
-    .map(String)                  // ensure they are strings
-    .sort((a, b) => +a - +b);     // sort numerically
+    .map(d => d.team_id)        
+    .map(String)               
+    .sort((a, b) => +a - +b);    
 
-  // Update x domain with sorted string IDs
   const x = d3.scaleBand().range([0, width]).padding(0.2)
     .domain(sortedTeamIds);
 
@@ -128,7 +122,6 @@ d3.csv("https://raw.githubusercontent.com/annette-antony/sportsperformance/refs/
     .transition().duration(750)
     .call(yAxis);
 
-  // Rotate the x-axis labels for readability
   xAxisG.selectAll("text")
     .attr("text-anchor", "end")
     .attr("transform", "rotate(-45)")
@@ -148,8 +141,7 @@ d3.csv("https://raw.githubusercontent.com/annette-antony/sportsperformance/refs/
     .attr("transform", d => `translate(${x(d.team_id)},0)`);
 
   const barWidth = x.bandwidth() / 2;
-
-  // Goals bars
+  
   let goalsBar = barGroupMerged.selectAll(".goals-bar").data(d => [d]);
   goalsBar.exit().remove();
   goalsBar = goalsBar.enter()
@@ -168,7 +160,6 @@ d3.csv("https://raw.githubusercontent.com/annette-antony/sportsperformance/refs/
     .attr("height", d => height - y(d.goals))
     .attr("fill", "steelblue");
 
-  // xG bars
   let xgBar = barGroupMerged.selectAll(".xg-bar").data(d => [d]);
   xgBar.exit().remove();
   xgBar = xgBar.enter()
