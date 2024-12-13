@@ -165,7 +165,7 @@ ggplot(df_long, aes(x = metric, y = value, fill = home_away)) +
 ```
 The above graph reveals a clear trend where most teams perform better at home than away, particularly in terms of xG (expected goals) per match. All teams, except Bournemouth, Hull City, Leicester City, Sunderland, and Swansea City, show higher xG per match when playing at home compared to away. A similar pattern is observed for xA (expected assists), further emphasizing the advantage of playing in a familiar home stadium. This trend suggests that the home atmosphere plays a significant role in a team’s performance. Teams with a higher xG and xA at home might benefit from the psychological and tactical advantages of playing in their own stadium. These statistics can be valuable for assessing a team’s overall strength, as well as identifying potential weaknesses or inconsistencies in their away form. By analyzing this data, coaches, analysts, and fans can better understand how home and away factors influence team performance throughout the season.
 
-## Analyzing metrics across positions
+## Reviewing metrics across positions
 
 ```{r,message=FALSE,warning=FALSE, fig.width=20, fig.height=10}
 
@@ -216,13 +216,14 @@ ggplot(heatmap_matrix, aes(x = variable, y = pos, fill = value)) +
 ```
 From the graph, we can observe that midfielders generally have the highest values for assists_per_match, xA_per_match, shots_per_match, and key_passes_per_match. Forwards tend to have slightly higher goals_per_match and xG_per_match compared to midfielders. Defenders contribute the least across these metrics when compared to midfielders and forwards. An interesting insight is that midfielders have higher shots_per_match than forwards, which is somewhat unexpected.
 
-## Analyzing total_shots and total_key_passes for each team
+## Investigating total_shots and total_key_passes for each team
 
 ```{r,message=FALSE,warning=FALSE, fig.width=20, fig.height=8}
 
 df_team_match_grouped <- player_df |>
   group_by(match_id,team_name) |>
   summarise(
+    home_away = unique(home_away), 
     total_goals = sum(goals, na.rm = TRUE),
     total_xG = sum(xG, na.rm = TRUE),
     total_xA = sum(xA, na.rm = TRUE),
@@ -251,11 +252,10 @@ ggplot(df_long_tm, aes(x = team_name, y = value, fill = metric)) +
 
 From the combined boxplot, it is evident that Manchester City and Tottenham Hotspur consistently exhibit the highest medians for both total shots and total key passes, reflecting their strong offensive gameplay. In contrast, Burnley shows the lowest median for total shots, indicating their struggles in creating scoring opportunities. Additionally, the plot highlights the presence of outliers, showcasing matches where teams performed significantly above or below their typical range. The visualization also provides insights into the lower and upper quartiles, offering a clear understanding of the variability and distribution of performance metrics across different teams.
 
-## ??
+## Deconstructing the most disciplinary records received by players
 
 ```{r,message=FALSE,warning=FALSE, fig.width=20, fig.height=10}
 
-# Bar Chart: YellowCards by Player
 card_summary <- player_df |>
   group_by(player) |>
   summarize(total_yellow = sum(yellow_card, na.rm = TRUE),
@@ -269,13 +269,20 @@ mean_red <- mean(card_summary$total_red)
 card_chart <- ggplot(card_summary, aes(y = reorder(player, (total_yellow)))) +
   geom_bar(aes(x = total_yellow), stat = "identity", fill = "lightgoldenrod") +
   geom_bar(aes(x = total_red), stat = "identity", position = 'stack', fill = "indianred") +
-  labs(title = "Disciplinary Records by top 50 Players", y = "Player", x = "Total Cards") +
+  labs(title = "Disciplinary Records : Top 50 Players", y = "Player", x = "Yellow Cards") +
   theme_minimal() 
 print(card_chart)
 ```
+In this study, we examined the disciplinary records of football players based on their yellow and red cards, focusing on the top 50 players with the highest number cards. The data was aggregated by player throughout the season, providing insight into the behavior of players in competitive matches. By looking at the chart, we can identify players who have accumulated the highest number of yellow and red cards, potentially indicating a more aggressive playing style or a higher frequency of fouls during games.
+
+The yellow cards recieved by players are represented with yellow bars and the red cards are represented with red cards. We made the decision to overlay the red cards recieved on top of the yellow cards, instead of stacking them together, so as to study the disciplinary reocrd pattern observed in players.
+
+We can observe that 11 are most number of foul cards obtained by 4 players and no player receives more than one red card. Instances of receiving a yellow foul card are higher than getiing a red card as a red card is more serious.
+
+Mark Noble and James Milner are two players with a red card and the highest number of yellow cards. This distribution is right skewed as we ordered the data in descending order and there exists many people players who do not receive a foul card during their play.
 
 
-## ?
+## Studying the expected goals and opposition's expected goals for all teams
 
 ```{r,message=FALSE,warning=FALSE, fig.width=20, fig.height=10}
 
@@ -321,3 +328,31 @@ Any deviation from this expected trend suggests that either the team or the oppo
 On the other hand, a green point above the line  y = x  indicates strong performance, where the team not only had more scoring chances but also capitalized on them effectively, leading to a win. Teams like Arsenal, Leicester City, and Tottenham Hotspur, which have numerous green points above  y = x , demonstrate good performance by converting their opportunities into victories.
 
 Conversely, teams like Aston Villa and Norwich City show a different trend, with more red points below the line  y = x . This suggests that although they might have had opportunities, they either failed to capitalize on them or could not prevent the opposition from scoring, resulting in a poor performance. Such teams may need to focus on improving both their attacking efficiency and defensive resilience.
+
+
+
+
+## Dissecting performance metrics trends in teams
+
+```{r,message=FALSE,warning=FALSE, fig.width=20, fig.height=10}
+
+# Summarize metrics by team_name
+df_team_grouped <- df_combined |>
+  group_by(team_name) |>
+  summarise(
+    avg_goals = mean(total_goals, na.rm = TRUE),
+    avg_xG = mean(total_xG, na.rm = TRUE),
+    avg_xA = mean(total_xA, na.rm = TRUE),
+    avg_shots = mean(total_shots, na.rm = TRUE),
+    avg_assists = mean(total_assists, na.rm = TRUE),
+    avg_key_passes = mean(total_key_passes, na.rm = TRUE),
+    .groups = "drop"  # Prevent grouping in output
+  )
+library(parcoords)
+parcoords(df_team_grouped, 
+          rownames = FALSE,
+          reorderable = TRUE, 
+          brushMode = TRUE)
+
+```
+
