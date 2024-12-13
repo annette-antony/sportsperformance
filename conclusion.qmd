@@ -5,3 +5,24 @@ In conclusion, this project shows just how powerful data analytics can be in the
 Looking at teams, comparing their actual results with their expected metrics helps us figure out who’s really making the most of their chances and who needs to step up their finishing. Checking performance at home versus away games reveals how much a familiar stadium and home crowd can matter. On top of that, studying starting lineups, substitutions, passing accuracy, and assist patterns gives coaches and managers real insights into what works and what doesn’t.
 
 This kind of analysis isn’t just for the people running the teams—it also helps fans understand the game on a deeper level. By moving beyond guesswork and focusing on the numbers, we can all see the sport in a new light. As better and more detailed data becomes available, soccer will keep evolving, and those who embrace data-driven methods will have a clear edge. It’s a new era where informed decisions and measurable insights can guide teams toward consistent success on the pitch.
+
+##Main Takeaways:
+
+We can spot key players by looking at minutes played, goals, assists, and expected metrics. We can visualise and compare what teams actually do to what’s expected reveals who’s overachieving or underperforming.
+Home advantage is real! teams usually do better at home than away.
+Understanding passing, assists, and disciplinary records gives a fuller picture of strengths, weaknesses, and playing styles.
+
+##Limitations:
+
+Metrics like xG (expected goals) don’t capture everything, like injuries or weather.
+A single prediction model may not fit all playing styles or unusual match conditions.
+
+##Future Directions:
+
+We could define and use many more parameters - player tracking, defensive actions, and more detailed metrics.
+We could even explore and apply machine learning techniques to predict fatigue, performance patterns, and better player roles.
+
+##Lessons Learned:
+
+A single metric/parameter is not enough; we require multiple metrics to give a clearer view and this proves to be very challenging in practice. We should strive to refine methods as the game and data evolve to 
+Focus on turning insights into real actions—better lineups, smarter subs, and improved training.
