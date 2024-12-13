@@ -102,6 +102,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="site_libs/parallel-coordinates-2.1.8/parcoords.css" rel="stylesheet">
+<script src="site_libs/parcoords-binding-1.0.1/parcoords.js"></script>
 
 
 </head>
@@ -187,9 +191,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#team-work-makes-the-dream-work-analysing-player-assists" id="toc-team-work-makes-the-dream-work-analysing-player-assists" class="nav-link" data-scroll-target="#team-work-makes-the-dream-work-analysing-player-assists"><span class="header-section-number">3.2</span> Team Work Makes The Dream Work: Analysing Player Assists</a></li>
   <li><a href="#goals-vs-xg" id="toc-goals-vs-xg" class="nav-link" data-scroll-target="#goals-vs-xg"><span class="header-section-number">3.3</span> Goals vs xG</a></li>
   <li><a href="#understanding-home-and-away-form-of-each-team" id="toc-understanding-home-and-away-form-of-each-team" class="nav-link" data-scroll-target="#understanding-home-and-away-form-of-each-team"><span class="header-section-number">3.4</span> Understanding home and away form of each team</a></li>
-  <li><a href="#analyzing-metrics-across-positions" id="toc-analyzing-metrics-across-positions" class="nav-link" data-scroll-target="#analyzing-metrics-across-positions"><span class="header-section-number">3.5</span> Analyzing metrics across positions</a></li>
-  <li><a href="#analyzing-total_shots-and-total_key_passes-for-each-team" id="toc-analyzing-total_shots-and-total_key_passes-for-each-team" class="nav-link" data-scroll-target="#analyzing-total_shots-and-total_key_passes-for-each-team"><span class="header-section-number">3.6</span> Analyzing total_shots and total_key_passes for each team</a></li>
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">3.7</span> ??</a></li>
+  <li><a href="#reviewing-metrics-across-positions" id="toc-reviewing-metrics-across-positions" class="nav-link" data-scroll-target="#reviewing-metrics-across-positions"><span class="header-section-number">3.5</span> Reviewing metrics across positions</a></li>
+  <li><a href="#investigating-total_shots-and-total_key_passes-for-each-team" id="toc-investigating-total_shots-and-total_key_passes-for-each-team" class="nav-link" data-scroll-target="#investigating-total_shots-and-total_key_passes-for-each-team"><span class="header-section-number">3.6</span> Investigating total_shots and total_key_passes for each team</a></li>
+  <li><a href="#deconstructing-the-most-disciplinary-records-received-by-players" id="toc-deconstructing-the-most-disciplinary-records-received-by-players" class="nav-link" data-scroll-target="#deconstructing-the-most-disciplinary-records-received-by-players"><span class="header-section-number">3.7</span> Deconstructing the most disciplinary records received by players</a></li>
+  <li><a href="#studying-the-expected-goals-and-oppositions-expected-goals-for-all-teams" id="toc-studying-the-expected-goals-and-oppositions-expected-goals-for-all-teams" class="nav-link" data-scroll-target="#studying-the-expected-goals-and-oppositions-expected-goals-for-all-teams"><span class="header-section-number">3.8</span> Studying the expected goals and opposition’s expected goals for all teams</a></li>
+  <li><a href="#dissecting-performance-metrics-trends-in-teams" id="toc-dissecting-performance-metrics-trends-in-teams" class="nav-link" data-scroll-target="#dissecting-performance-metrics-trends-in-teams"><span class="header-section-number">3.9</span> Dissecting performance metrics trends in teams</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/annette-antony/sportsperformance/edit/main/results.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/annette-antony/sportsperformance/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -405,8 +411,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The above graph reveals a clear trend where most teams perform better at home than away, particularly in terms of xG (expected goals) per match. All teams, except Bournemouth, Hull City, Leicester City, Sunderland, and Swansea City, show higher xG per match when playing at home compared to away. A similar pattern is observed for xA (expected assists), further emphasizing the advantage of playing in a familiar home stadium. This trend suggests that the home atmosphere plays a significant role in a team’s performance. Teams with a higher xG and xA at home might benefit from the psychological and tactical advantages of playing in their own stadium. These statistics can be valuable for assessing a team’s overall strength, as well as identifying potential weaknesses or inconsistencies in their away form. By analyzing this data, coaches, analysts, and fans can better understand how home and away factors influence team performance throughout the season.</p>
 </section>
-<section id="analyzing-metrics-across-positions" class="level2" data-number="3.5">
-<h2 data-number="3.5" class="anchored" data-anchor-id="analyzing-metrics-across-positions"><span class="header-section-number">3.5</span> Analyzing metrics across positions</h2>
+<section id="reviewing-metrics-across-positions" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="reviewing-metrics-across-positions"><span class="header-section-number">3.5</span> Reviewing metrics across positions</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -464,37 +470,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>From the graph, we can observe that midfielders generally have the highest values for assists_per_match, xA_per_match, shots_per_match, and key_passes_per_match. Forwards tend to have slightly higher goals_per_match and xG_per_match compared to midfielders. Defenders contribute the least across these metrics when compared to midfielders and forwards. An interesting insight is that midfielders have higher shots_per_match than forwards, which is somewhat unexpected.</p>
 </section>
-<section id="analyzing-total_shots-and-total_key_passes-for-each-team" class="level2" data-number="3.6">
-<h2 data-number="3.6" class="anchored" data-anchor-id="analyzing-total_shots-and-total_key_passes-for-each-team"><span class="header-section-number">3.6</span> Analyzing total_shots and total_key_passes for each team</h2>
+<section id="investigating-total_shots-and-total_key_passes-for-each-team" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="investigating-total_shots-and-total_key_passes-for-each-team"><span class="header-section-number">3.6</span> Investigating total_shots and total_key_passes for each team</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df_team_match_grouped <span class="ot">&lt;-</span> player_df <span class="sc">|&gt;</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(match_id,team_name) <span class="sc">|&gt;</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_goals =</span> <span class="fu">sum</span>(goals, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_xG =</span> <span class="fu">sum</span>(xG, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_xA =</span> <span class="fu">sum</span>(xA, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_shots =</span> <span class="fu">sum</span>(shots, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_assists =</span> <span class="fu">sum</span>(assists, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_key_passes =</span> <span class="fu">sum</span>(key_passes, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_time_played =</span> <span class="fu">sum</span>(time_played, <span class="at">na.rm=</span><span class="cn">TRUE</span>)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>df_long_tm <span class="ot">&lt;-</span> df_team_match_grouped <span class="sc">%&gt;%</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(total_shots, total_key_passes),</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"metric"</span>,</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"value"</span>)</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_long_tm, <span class="fu">aes</span>(<span class="at">x =</span> team_name, <span class="at">y =</span> value, <span class="at">fill =</span> metric)) <span class="sc">+</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="fl">0.8</span>), <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Boxplot of Total Shots and Key Passes by Team"</span>, </span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Team Names"</span>, </span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Value"</span>) <span class="sc">+</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"lightblue"</span>, <span class="st">"orange"</span>),</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>                    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Total Shots"</span>, <span class="st">"Total Key Passes"</span>)) <span class="sc">+</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">home_away =</span> <span class="fu">unique</span>(home_away), </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_goals =</span> <span class="fu">sum</span>(goals, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_xG =</span> <span class="fu">sum</span>(xG, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_xA =</span> <span class="fu">sum</span>(xA, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_shots =</span> <span class="fu">sum</span>(shots, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_assists =</span> <span class="fu">sum</span>(assists, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_key_passes =</span> <span class="fu">sum</span>(key_passes, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_time_played =</span> <span class="fu">sum</span>(time_played, <span class="at">na.rm=</span><span class="cn">TRUE</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>df_long_tm <span class="ot">&lt;-</span> df_team_match_grouped <span class="sc">%&gt;%</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(total_shots, total_key_passes),</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"metric"</span>,</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"value"</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_long_tm, <span class="fu">aes</span>(<span class="at">x =</span> team_name, <span class="at">y =</span> value, <span class="at">fill =</span> metric)) <span class="sc">+</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="fl">0.8</span>), <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Boxplot of Total Shots and Key Passes by Team"</span>, </span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Team Names"</span>, </span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Value"</span>) <span class="sc">+</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"lightblue"</span>, <span class="st">"orange"</span>),</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>                    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Total Shots"</span>, <span class="st">"Total Key Passes"</span>)) <span class="sc">+</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -506,28 +513,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>From the combined boxplot, it is evident that Manchester City and Tottenham Hotspur consistently exhibit the highest medians for both total shots and total key passes, reflecting their strong offensive gameplay. In contrast, Burnley shows the lowest median for total shots, indicating their struggles in creating scoring opportunities. Additionally, the plot highlights the presence of outliers, showcasing matches where teams performed significantly above or below their typical range. The visualization also provides insights into the lower and upper quartiles, offering a clear understanding of the variability and distribution of performance metrics across different teams.</p>
 </section>
-<section id="section" class="level2" data-number="3.7">
-<h2 data-number="3.7" class="anchored" data-anchor-id="section"><span class="header-section-number">3.7</span> ??</h2>
+<section id="deconstructing-the-most-disciplinary-records-received-by-players" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="deconstructing-the-most-disciplinary-records-received-by-players"><span class="header-section-number">3.7</span> Deconstructing the most disciplinary records received by players</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bar Chart: YellowCards by Player</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>card_summary <span class="ot">&lt;-</span> player_df <span class="sc">|&gt;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(player) <span class="sc">|&gt;</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">total_yellow =</span> <span class="fu">sum</span>(yellow_card, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">total_red =</span> <span class="fu">sum</span>(red_card, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(total_yellow)) <span class="sc">|&gt;</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">50</span>)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>mean_yellow <span class="ot">&lt;-</span> <span class="fu">mean</span>(card_summary<span class="sc">$</span>total_yellow)</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>mean_red <span class="ot">&lt;-</span> <span class="fu">mean</span>(card_summary<span class="sc">$</span>total_red)</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>card_chart <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(card_summary, <span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">reorder</span>(player, (total_yellow)))) <span class="sc">+</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">x =</span> total_yellow), <span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> <span class="st">"lightgoldenrod"</span>) <span class="sc">+</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">x =</span> total_red), <span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="st">'stack'</span>, <span class="at">fill =</span> <span class="st">"indianred"</span>) <span class="sc">+</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Disciplinary Records by top 50 Players"</span>, <span class="at">y =</span> <span class="st">"Player"</span>, <span class="at">x =</span> <span class="st">"Total Cards"</span>) <span class="sc">+</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() </span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(card_chart)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>card_summary <span class="ot">&lt;-</span> player_df <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(player) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">total_yellow =</span> <span class="fu">sum</span>(yellow_card, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">total_red =</span> <span class="fu">sum</span>(red_card, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(total_yellow)) <span class="sc">|&gt;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">50</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>mean_yellow <span class="ot">&lt;-</span> <span class="fu">mean</span>(card_summary<span class="sc">$</span>total_yellow)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>mean_red <span class="ot">&lt;-</span> <span class="fu">mean</span>(card_summary<span class="sc">$</span>total_red)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>card_chart <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(card_summary, <span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">reorder</span>(player, (total_yellow)))) <span class="sc">+</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">x =</span> total_yellow), <span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> <span class="st">"lightgoldenrod"</span>) <span class="sc">+</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">x =</span> total_red), <span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="st">'stack'</span>, <span class="at">fill =</span> <span class="st">"indianred"</span>) <span class="sc">+</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Disciplinary Records : Top 50 Players"</span>, <span class="at">y =</span> <span class="st">"Player"</span>, <span class="at">x =</span> <span class="st">"Yellow Cards"</span>) <span class="sc">+</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() </span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(card_chart)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -535,6 +541,90 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="results_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="1920"></p>
 </figure>
 </div>
+</div>
+</div>
+<p>In this study, we examined the disciplinary records of football players based on their yellow and red cards, focusing on the top 50 players with the highest number cards. The data was aggregated by player throughout the season, providing insight into the behavior of players in competitive matches. By looking at the chart, we can identify players who have accumulated the highest number of yellow and red cards, potentially indicating a more aggressive playing style or a higher frequency of fouls during games.</p>
+<p>The yellow cards recieved by players are represented with yellow bars and the red cards are represented with red cards. We made the decision to overlay the red cards recieved on top of the yellow cards, instead of stacking them together, so as to study the disciplinary reocrd pattern observed in players.</p>
+<p>We can observe that 11 are most number of foul cards obtained by 4 players and no player receives more than one red card. Instances of receiving a yellow foul card are higher than getiing a red card as a red card is more serious.</p>
+<p>Mark Noble and James Milner are two players with a red card and the highest number of yellow cards. This distribution is right skewed as we ordered the data in descending order and there exists many people players who do not receive a foul card during their play.</p>
+</section>
+<section id="studying-the-expected-goals-and-oppositions-expected-goals-for-all-teams" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="studying-the-expected-goals-and-oppositions-expected-goals-for-all-teams"><span class="header-section-number">3.8</span> Studying the expected goals and opposition’s expected goals for all teams</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df_with_lag <span class="ot">&lt;-</span> df_team_match_grouped <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(match_id) <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(total_goals<span class="sc">:</span>total_time_played, <span class="sc">~</span><span class="fu">lag</span>(.x), <span class="at">.names =</span> <span class="st">"opposition_{.col}"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>df_with_lead <span class="ot">&lt;-</span> df_team_match_grouped <span class="sc">|&gt;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(match_id) <span class="sc">|&gt;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(total_goals<span class="sc">:</span>total_time_played, <span class="sc">~</span><span class="fu">lead</span>(.x), <span class="at">.names =</span> <span class="st">"opposition_{.col}"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>df_with_lag <span class="ot">=</span> <span class="fu">na.omit</span>(df_with_lag)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>df_with_lead <span class="ot">=</span> <span class="fu">na.omit</span>(df_with_lead)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>df_combined <span class="ot">=</span>  <span class="fu">rbind</span>(df_with_lag, df_with_lead)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>df_combined <span class="ot">&lt;-</span> df_combined <span class="sc">|&gt;</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">result =</span> <span class="fu">case_when</span>(</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    total_goals <span class="sc">&gt;</span> opposition_total_goals <span class="sc">~</span> <span class="st">"win"</span>,</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    total_goals <span class="sc">==</span> opposition_total_goals <span class="sc">~</span> <span class="st">"tie"</span>,</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    total_goals <span class="sc">&lt;</span> opposition_total_goals <span class="sc">~</span> <span class="st">"loss"</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_combined, <span class="fu">aes</span>(<span class="at">x =</span> opposition_total_xG, <span class="at">y =</span> total_xG, <span class="at">color =</span> <span class="fu">factor</span>(result))) <span class="sc">+</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span>  </span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>team_name) <span class="sc">+</span>  </span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"xG vs Opposition xG Faceted by Team"</span>, </span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Opposition xG"</span>, </span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"xG"</span>,</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>       <span class="at">COLOR =</span> <span class="st">"result"</span>) <span class="sc">+</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">linewidth =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"loss"</span> <span class="ot">=</span> <span class="st">"red"</span>, <span class="st">"tie"</span> <span class="ot">=</span> <span class="st">"yellow"</span>, <span class="st">"win"</span> <span class="ot">=</span> <span class="st">"green"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="results_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="1920"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The scatter plot should ideally reflect the following: points lying above the line y = x (where xG are greater than the opposition’s xG) should be green, indicating a win for the team. Points on the line y = x (where the xG scored by both teams are equal) should be yellow, reflecting a draw. Points below the line y = x (where the opposition has more xG) should be red, representing a loss.</p>
+<p>Any deviation from this expected trend suggests that either the team or the opposition failed to capitalize on scoring opportunities. For example, a red point above the line y = x indicates that despite having more scoring chances (more xG), the team lost the match. This might reflect missed opportunities or an inability to convert chances effectively.</p>
+<p>On the other hand, a green point above the line y = x indicates strong performance, where the team not only had more scoring chances but also capitalized on them effectively, leading to a win. Teams like Arsenal, Leicester City, and Tottenham Hotspur, which have numerous green points above y = x , demonstrate good performance by converting their opportunities into victories.</p>
+<p>Conversely, teams like Aston Villa and Norwich City show a different trend, with more red points below the line y = x . This suggests that although they might have had opportunities, they either failed to capitalize on them or could not prevent the opposition from scoring, resulting in a poor performance. Such teams may need to focus on improving both their attacking efficiency and defensive resilience.</p>
+</section>
+<section id="dissecting-performance-metrics-trends-in-teams" class="level2" data-number="3.9">
+<h2 data-number="3.9" class="anchored" data-anchor-id="dissecting-performance-metrics-trends-in-teams"><span class="header-section-number">3.9</span> Dissecting performance metrics trends in teams</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarize metrics by team_name</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>df_team_grouped <span class="ot">&lt;-</span> df_combined <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(team_name) <span class="sc">|&gt;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_goals =</span> <span class="fu">mean</span>(total_goals, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_xG =</span> <span class="fu">mean</span>(total_xG, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_xA =</span> <span class="fu">mean</span>(total_xA, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_shots =</span> <span class="fu">mean</span>(total_shots, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_assists =</span> <span class="fu">mean</span>(total_assists, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_key_passes =</span> <span class="fu">mean</span>(total_key_passes, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span>  <span class="co"># Prevent grouping in output</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(parcoords)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="fu">parcoords</span>(df_team_grouped, </span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>          <span class="at">rownames =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>          <span class="at">reorderable =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>          <span class="at">brushMode =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="parcoords html-widget html-fill-item" height="325px" id="htmlwidget-62c6cadb239a570361a3" style="width:100%;height:325px; position:relative; overflow-x:auto; overflow-y:hidden; max-width:100%;" width="100%"></div>
+<script type="application/json" data-for="htmlwidget-62c6cadb239a570361a3">{"x":{"data":{"names":["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23"],"team_name":["Arsenal","Aston Villa","Bournemouth","Burnley","Chelsea","Crytsal Palace","Everton","Hull City","Leicester City","Liverpool","Manchester City","Manchester United","Middlesbrough","Newcastle United","Norwich City","Southampton","Stoke City","Sunderland","Swansea City","Tottenham Hotspur","Watford","West Bromwich Albion","West Ham"],"avg_goals":[1.666666666666667,0.631578947368421,1.095238095238095,0.75,1.523809523809524,0.9761904761904762,1.476190476190476,1.25,1.69047619047619,1.69047619047619,1.928571428571429,1.261904761904762,1,1.131578947368421,1,1.404761904761905,1,1.119047619047619,1.071428571428571,1.785714285714286,1.047619047619048,0.8095238095238095,1.642857142857143],"avg_xG":[1.906464781190845,0.7022568162677714,0.9933000052392128,0.4717799944337458,1.49813420567218,1.139188071879159,1.489245823274056,1.058137887855992,1.827278608367557,1.477501390324462,1.830562803827759,1.257278348718371,0.9172274803277103,0.9936354106635247,1.036082430865223,1.446695131582341,1.089035148111482,1.092393781635023,1.074684275646827,1.685063654512522,1.129870271665,1.092375181149691,1.431111659499861],"avg_xA":[1.495899985899173,0.5471517793638142,0.7018916076270953,0.3534833008889108,1.077473412312212,0.7944991265623165,1.100760946094635,0.8248743906151507,1.216630344190413,1.215689936087334,1.253541737927922,0.8808698993442314,0.8093454025220125,0.7347920112262823,0.7156179878419558,1.116750550899832,0.7984465912450104,0.7740623463787848,0.7496023353277927,1.241917659861169,0.693784801910321,0.7278863980124393,1.052783089135552],"avg_shots":[14.78571428571429,10,11.97619047619048,8,14.40476190476191,12.59523809523809,13.26190476190476,11.25,13.64285714285714,16.69047619047619,16.26190476190476,11.80952380952381,9.75,10.44736842105263,11,13.88095238095238,11,11.42857142857143,11.80952380952381,17.19047619047619,11.52380952380952,10.42857142857143,14.5],"avg_assists":[1.380952380952381,0.5,0.7380952380952381,0.75,1.071428571428571,0.5476190476190477,1.142857142857143,0.75,1.119047619047619,1.357142857142857,1.428571428571429,0.8333333333333334,1,0.8947368421052632,0.7105263157894737,1.095238095238095,0.6904761904761905,0.6904761904761905,0.6190476190476191,1.357142857142857,0.5476190476190477,0.6428571428571429,1],"avg_key_passes":[12.02380952380952,7.447368421052632,9.261904761904763,5.5,11.02380952380952,8.80952380952381,10,6.5,10.11904761904762,13.35714285714286,12.61904761904762,8.571428571428571,7.5,8.368421052631579,8.236842105263158,10.69047619047619,8.071428571428571,8.261904761904763,8.952380952380953,13.02380952380952,8,7.547619047619047,11.04761904761905]},"options":{"rownames":false,"brushPredicate":"AND","reorderable":true,"margin":{"top":50,"bottom":50,"left":100,"right":50},"mode":false,"bundlingStrength":0.5,"smoothness":0},"autoresize":false,"tasks":null},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 
